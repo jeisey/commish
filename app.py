@@ -1,16 +1,14 @@
 import streamlit as st
 import openai
-import clipboard
 from streamlit.logger import get_logger
 from utils import summary_generator
 
 
 LOGGER = get_logger(__name__)
 
-
 def on_copy_click(text):
-    st.session_state.copied.append(text)
-    clipboard.copy(text)
+    st.clipboard_write(text)
+    st.session_state['copied'] = True  # Update the session state to indicate the text has been copied
 
 
 def main():
@@ -63,8 +61,9 @@ def main():
                 st.write(f'Trash Talk Level: {trash_talk_level}')
 
                 # Fetch open ai key
-                openai_api_key=st.secrets["openai_api_key"]
-                openai.api_key=openai_api_key
+                # openai_api_key=st.secrets["openai_api_key"]
+                # openai.api_key=openai_api_key
+                openai.api_key="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"
 
                 summary, debug_info = summary_generator.get_espn_league_summary(
                     league_id, espn2, swid 
@@ -77,6 +76,16 @@ def main():
                     summary, character_description, trash_talk_level
                 )
 
+                # with st.chat_message("Commish"):
+                #     message_placeholder = st.empty()
+                #     full_response = ""
+                #     for chunk in gpt4_summary_stream:
+                #         full_response += chunk
+                #         message_placeholder.markdown(full_response + "▌")
+                #     message_placeholder.markdown(full_response)
+                #     if st.button("📋 Copy to clipboard"):
+                #         on_copy_click(full_response)
+                
                 with st.chat_message("Commish"):
                     message_placeholder = st.empty()
                     full_response = ""
@@ -84,13 +93,10 @@ def main():
                         full_response += chunk
                         message_placeholder.markdown(full_response + "▌")
                     message_placeholder.markdown(full_response)
-                    if len(st.session_state.copied) > 5:
-                        st.session_state.copied.pop(0)
-                    st.button("📋", on_click=on_copy_click, args=(full_response,))
+                    
+                    # Display the full response within a code block which provides a copy button
+                    st.code(full_response, language="")
 
-
-
-    
 
 if __name__ == "__main__":
     main()
