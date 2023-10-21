@@ -108,8 +108,9 @@ def main():
                             message_placeholder.markdown(full_response)
                             
                             # Display the full response within a code block which provides a copy button
+                            st.markdown("**Click the copy icon** 📋 below in top right corner to copy your summary and paste it wherever you see fit!")
                             st.code(full_response, language="")
-                            st.markdown("**Click the copy icon** 📋 above in top right corner to copy your summary and paste it wherever you see fit!")
+                            
             except Exception as e:
                 status.error(f"An error occurred: {str(e)}")
                 st.error(f"An error occurred: {str(e)}")
