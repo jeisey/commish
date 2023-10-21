@@ -43,8 +43,8 @@ def main():
             elif league_type == "Yahoo":
                 st.text_input("LeagueID", key='LeagueID')
             
-            st.text_input("Character Description", key='Character Description', placeholder="Dwight Schrute")
-            st.slider("Trash Talk Level", 1, 10, key='Trash Talk Level', value=5)
+            st.text_input("Character Description", key='Character Description', placeholder="Dwight Schrute", help= "Describe a persona for the AI to adopt. E.g. 'Dwight Schrute' or 'A very drunk Captain Jack Sparrow'")
+            st.slider("Trash Talk Level", 1, 10, key='Trash Talk Level', value=5, help="Scale of 1 to 10, where 1 is friendly banter and 10 is more extreme trash talk")
             submit_button = st.form_submit_button(label='🤖Generate AI Summary')
 
     
