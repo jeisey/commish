@@ -109,7 +109,7 @@ def main():
                             # Display the full response within a code block which provides a copy button
                             st.markdown("**Click the copy icon** 📋 below in top right corner to copy your summary and paste it wherever you see fit!")
                             st.code(full_response, language="")
-                            
+                            st.markdown("Don't like this one? Try entering a **new character** and it will **start generating immediately**.")
             except Exception as e:
                 status.error(f"An error occurred: {str(e)}")
                 st.error(f"An error occurred: {str(e)}")
