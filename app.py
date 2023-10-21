@@ -16,7 +16,8 @@ def main():
     """)
 
     with st.sidebar:
-        st.header("Input Form")
+        st.sidebar.image('logo.png')
+        st.header("Start here")
         league_type = st.selectbox("Select League Type", ["Select", "ESPN", "Yahoo"], key='league_type')
 
     if league_type != "Select":
@@ -91,7 +92,7 @@ def main():
                             
                             # Display the full response within a code block which provides a copy button
                             st.code(full_response, language="")
-                            st.markdown("Click the copy icon above to copy your summary and paste it wherever you see fit!")
+                            st.markdown("**Click the copy icon** 📋 above in top right corner to copy your summary and paste it wherever you see fit!")
             except Exception as e:
                 st.error(f"An error occurred: {str(e)}")
                 LOGGER.exception(e)
