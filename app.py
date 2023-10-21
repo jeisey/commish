@@ -4,6 +4,7 @@ from streamlit.logger import get_logger
 from utils import summary_generator
 from utils.helper import check_availability
 
+
 LOGGER = get_logger(__name__)
 
 
@@ -15,7 +16,6 @@ st.set_page_config(
 )
 
 def main():
-    # st.title("Fantasy Football Weekly Summary Generator")
     st.write("""
     ## Instructions:
 
@@ -78,13 +78,6 @@ def main():
                         trash_talk_level = st.session_state.get('Trash Talk Level', 'Not provided')
                         swid = st.session_state.get('SWID', 'Not provided')
                         espn2 = st.session_state.get('ESPN2_Id', 'Not provided')
-                        
-                        # st.write(f'League Type: {league_type}')
-                        # st.write(f'LeagueID: {league_id}')
-                        # st.write(f'SWID: {swid}')
-                        # st.write(f'ESPN2_Id: {espn2}')
-                        # st.write(f'Character Description: {character_description}')
-                        # st.write(f'Trash Talk Level: {trash_talk_level}')
 
                         # Fetch open ai key
                         openai_api_key=st.secrets["openai_api_key"]
@@ -99,15 +92,13 @@ def main():
                             summary = summary_generator.get_yahoo_league_summary(
                                 league_id, auth_directory
                             )
-                        # st.write(f'ESPN Summary: {summary}')
-                        # st.write(f'Debug Info: {debug_info}')
                         
                         status.text('Generating AI summary...')
                         gpt4_summary_stream = summary_generator.generate_gpt4_summary_streaming(
                             summary, character_description, trash_talk_level
                         )
                         
-                        with st.chat_message("Commish"):
+                        with st.chat_message("Commish", avatar="🤖"):
                             message_placeholder = st.empty()
                             full_response = ""
                             for chunk in gpt4_summary_stream:
