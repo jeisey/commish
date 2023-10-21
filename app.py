@@ -52,7 +52,7 @@ def main():
         if submit_button:
             try:
                 # with st.spinner('Generating your summary... This will take about 15 seconds.'):
-                with st.status("Validating inputs...", expanded=True) as status:
+                with st.status("Generating your summary... This will take about 15 seconds", expanded=True) as status:
                     if league_type == "ESPN":
                         required_fields = ['LeagueID', 'SWID', 'ESPN2_Id', 'Character Description', 'Trash Talk Level']
                     else:
