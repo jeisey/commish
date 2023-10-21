@@ -7,7 +7,7 @@ LOGGER = get_logger(__name__)
 
 
 st.set_page_config(
-    page_title="Fantasy Football Weekly Summary Generator",
+    page_title="Commish.ai",
     page_icon="🏈",
     layout="centered",
     initial_sidebar_state="expanded"
