@@ -61,9 +61,8 @@ def main():
                 st.write(f'Trash Talk Level: {trash_talk_level}')
 
                 # Fetch open ai key
-                # openai_api_key=st.secrets["openai_api_key"]
-                # openai.api_key=openai_api_key
-                openai.api_key="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"
+                openai_api_key=st.secrets["openai_api_key"]
+                openai.api_key=openai_api_key
 
                 summary, debug_info = summary_generator.get_espn_league_summary(
                     league_id, espn2, swid 
