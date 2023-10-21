@@ -1,7 +1,9 @@
-# Welcome to streamlit
+# Welcome to [Commish.ai](https://commish.streamlit.app/)
 
-This is the app you get when you run `streamlit hello`, extracted as its own app.
+Generate weekly recaps of your Fantasy Football league with A.I. 🤖
 
-Edit [Hello.py](./Hello.py) to customize this app to your heart's desire. ❤️
+Supports ESPN and Yahoo leagues. Utilizes GPT-3.5-turbo. Free to use.
 
-Check it out on [Streamlit Community Cloud](https://st-hello-app.streamlit.app/)
+Only usable on Tuesday or Wednesday which are the standard "down-time" between fantasy weeks.
+
+Kudos to espn-api and yfpy for their great python wrappers
