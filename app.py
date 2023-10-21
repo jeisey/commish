@@ -51,7 +51,8 @@ def main():
         # Handling form 
         if submit_button:
             try:
-                with st.spinner('Generating your summary... This will take about 15 seconds.'):
+                # with st.spinner('Generating your summary... This will take about 15 seconds.'):
+                with st.status("Validating inputs...", expanded=True) as status:
                     if league_type == "ESPN":
                         required_fields = ['LeagueID', 'SWID', 'ESPN2_Id', 'Character Description', 'Trash Talk Level']
                     else:
@@ -62,6 +63,7 @@ def main():
                         if not value:
                             st.error(f"{field} is required.")
                             return  # Stop execution if any required field is empty
+                    status.text('Fetching league summary...')
                     if all(st.session_state.get(field, None) for field in required_fields):
                         league_id = st.session_state.get('LeagueID', 'Not provided')
                         character_description = st.session_state.get('Character Description', 'Not provided')
@@ -91,7 +93,8 @@ def main():
                             )
                         # st.write(f'ESPN Summary: {summary}')
                         # st.write(f'Debug Info: {debug_info}')
-
+                        
+                        status.text('Generating AI summary...')
                         gpt4_summary_stream = summary_generator.generate_gpt4_summary_streaming(
                             summary, character_description, trash_talk_level
                         )
@@ -108,6 +111,7 @@ def main():
                             st.code(full_response, language="")
                             st.markdown("**Click the copy icon** 📋 above in top right corner to copy your summary and paste it wherever you see fit!")
             except Exception as e:
+                status.error(f"An error occurred: {str(e)}")
                 st.error(f"An error occurred: {str(e)}")
                 LOGGER.exception(e)
 if __name__ == "__main__":
