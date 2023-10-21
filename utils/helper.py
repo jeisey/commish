@@ -8,10 +8,10 @@ def check_availability():
     current_day = now_est.weekday()
 
     if current_day == 1 and current_hour >= 4:  # Tuesday 4am onwards
-        return True
+        return True, now_est.strftime("%A")
     elif 1 < current_day < 4:  # All day Wednesday and Thursday until 7pm
-        return True
+        return True, now_est.strftime("%A")
     elif current_day == 4 and current_hour < 19:  # Thursday until 7pm
-        return True
+        return True, now_est.strftime("%A")
     else:
-        return False
+        return False, now_est.strftime("%A")
