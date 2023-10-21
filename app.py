@@ -1,7 +1,17 @@
 import streamlit as st
+import openai
+import clipboard
 from streamlit.logger import get_logger
+from utils import summary_generator
+
 
 LOGGER = get_logger(__name__)
+
+
+def on_copy_click(text):
+    st.session_state.copied.append(text)
+    clipboard.copy(text)
+
 
 def main():
     st.title("Fantasy Football Weekly Summary Generator")
@@ -21,7 +31,7 @@ def main():
         with st.sidebar.form(key='my_form'):
             if league_type == "ESPN":
                 st.text_input("LeagueID", key='LeagueID')
-                st.text_input("WSID", key='WSID')
+                st.text_input("SWID", key='SWID')
                 st.text_input("ESPN2_Id", key='ESPN2_Id')
             elif league_type == "Yahoo":
                 st.text_input("LeagueID", key='LeagueID')
@@ -34,7 +44,7 @@ def main():
         # Handling form 
         if submit_button:
             if league_type == "ESPN":
-                required_fields = ['LeagueID', 'WSID', 'ESPN2_Id', 'Character Description', 'Trash Talk Level']
+                required_fields = ['LeagueID', 'SWID', 'ESPN2_Id', 'Character Description', 'Trash Talk Level']
             else:
                 required_fields = ['LeagueID', 'Character Description', 'Trash Talk Level']
             
@@ -42,15 +52,45 @@ def main():
                 league_id = st.session_state.get('LeagueID', 'Not provided')
                 character_description = st.session_state.get('Character Description', 'Not provided')
                 trash_talk_level = st.session_state.get('Trash Talk Level', 'Not provided')
-                wsid = st.session_state.get('WSID', 'Not provided')
+                swid = st.session_state.get('SWID', 'Not provided')
                 espn2 = st.session_state.get('ESPN2_Id', 'Not provided')
                 
                 st.write(f'League Type: {league_type}')
                 st.write(f'LeagueID: {league_id}')
-                st.write(f'WSID: {wsid}')
+                st.write(f'SWID: {swid}')
                 st.write(f'ESPN2_Id: {espn2}')
                 st.write(f'Character Description: {character_description}')
                 st.write(f'Trash Talk Level: {trash_talk_level}')
+
+                # Fetch open ai key
+                openai_api_key=st.secrets["openai_api_key"]
+                openai.api_key=openai_api_key
+
+                summary, debug_info = summary_generator.get_espn_league_summary(
+                    league_id, espn2, swid 
+                )
+
+                st.write(f'ESPN Summary: {summary}')
+                st.write(f'Debug Info: {debug_info}')
+
+                gpt4_summary_stream = summary_generator.generate_gpt4_summary_streaming(
+                    summary, character_description, trash_talk_level
+                )
+
+                with st.chat_message("Commish"):
+                    message_placeholder = st.empty()
+                    full_response = ""
+                    for chunk in gpt4_summary_stream:
+                        full_response += chunk
+                        message_placeholder.markdown(full_response + "▌")
+                    message_placeholder.markdown(full_response)
+                    if len(st.session_state.copied) > 5:
+                        st.session_state.copied.pop(0)
+                    st.button("📋", on_click=on_copy_click, args=(full_response,))
+
+
+
+    
 
 if __name__ == "__main__":
     main()
