@@ -14,7 +14,7 @@ st.set_page_config(
 )
 
 def main():
-    st.title("Fantasy Football Weekly Summary Generator")
+    # st.title("Fantasy Football Weekly Summary Generator")
     st.write("""
     ## Instructions:
     1. Select your league type from the sidebar.
@@ -23,7 +23,7 @@ def main():
     """)
 
     with st.sidebar:
-        st.sidebar.image('logo.png')
+        st.sidebar.image('logo.png', use_column_width=True)
         st.header("Start here")
         league_type = st.selectbox("Select League Type", ["Select", "ESPN", "Yahoo"], key='league_type')
 
