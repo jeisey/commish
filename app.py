@@ -72,12 +72,6 @@ def main():
                         if not value:
                             st.error(f"{field} is required.")
                             return  # Stop execution if any required field is empty
-                    # Moderate the character description
-                    status.text('Validating character...')
-                    if not summary_generator.moderate_text(character_description):
-                        st.error("The character description contains inappropriate content. Please try again.")
-                        return  # Stop execution if moderation fails
-                    status.text('Fetching league summary...')
                     if all(st.session_state.get(field, None) for field in required_fields):
                         league_id = st.session_state.get('LeagueID', 'Not provided')
                         character_description = st.session_state.get('Character Description', 'Not provided')
@@ -89,6 +83,13 @@ def main():
                         openai_api_key=st.secrets["openai_api_key"]
                         openai.api_key=openai_api_key
 
+                        # Moderate the character description
+                        status.text('Validating character...')
+                        if not summary_generator.moderate_text(character_description):
+                            st.error("The character description contains inappropriate content. Please try again.")
+                            return  # Stop execution if moderation fails
+                        
+                        status.text('Fetching league summary...')
                         if league_type == "ESPN":
                             summary, debug_info = summary_generator.get_espn_league_summary(
                                 league_id, espn2, swid 
