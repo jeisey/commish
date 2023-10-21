@@ -143,8 +143,7 @@ def get_espn_league_summary(league_id, espn2, SWID):
     return summary, debug_info
 
 
-
-def generate_yahoo_summary(league_id, auth_path):
+def get_yahoo_league_summary(league_id, auth_path):
     league_id = league_id
     auth_directory = auth_path
     sc = YahooFantasySportsQuery(
