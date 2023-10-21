@@ -47,12 +47,12 @@ def main():
                 swid = st.session_state.get('SWID', 'Not provided')
                 espn2 = st.session_state.get('ESPN2_Id', 'Not provided')
                 
-                st.write(f'League Type: {league_type}')
-                st.write(f'LeagueID: {league_id}')
-                st.write(f'SWID: {swid}')
-                st.write(f'ESPN2_Id: {espn2}')
-                st.write(f'Character Description: {character_description}')
-                st.write(f'Trash Talk Level: {trash_talk_level}')
+                # st.write(f'League Type: {league_type}')
+                # st.write(f'LeagueID: {league_id}')
+                # st.write(f'SWID: {swid}')
+                # st.write(f'ESPN2_Id: {espn2}')
+                # st.write(f'Character Description: {character_description}')
+                # st.write(f'Trash Talk Level: {trash_talk_level}')
 
                 # Fetch open ai key
                 openai_api_key=st.secrets["openai_api_key"]
@@ -67,8 +67,8 @@ def main():
                     summary = summary_generator.get_yahoo_league_summary(
                         league_id, auth_directory
                     )
-                st.write(f'ESPN Summary: {summary}')
-                st.write(f'Debug Info: {debug_info}')
+                # st.write(f'ESPN Summary: {summary}')
+                # st.write(f'Debug Info: {debug_info}')
 
                 gpt4_summary_stream = summary_generator.generate_gpt4_summary_streaming(
                     summary, character_description, trash_talk_level
