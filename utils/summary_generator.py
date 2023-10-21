@@ -1,4 +1,5 @@
 from espn_api.football import League
+from yfpy.query import YahooFantasySportsQuery
 from utils import espn_helper, yahoo_helper
 import openai
 import datetime
@@ -22,9 +23,9 @@ def generate_gpt4_summary_streaming(summary, character_choice, trash_talk_level)
     try:
         # Send the messages to OpenAI's GPT-4 for analysis
         response = openai.ChatCompletion.create(
-            model="gpt-4", #options: gpt-4, gpt-3.5-turbo
+            model="gpt-3.5-turbo", #options: gpt-4, gpt-3.5-turbo
             messages=messages,
-            max_tokens=500,  # Control response lnegth
+            max_tokens=600,  # Control response lnegth
             stream=True
         )
         # Extract and return the GPT-4 generated message
@@ -140,3 +141,17 @@ def get_espn_league_summary(league_id, espn2, SWID):
     # Generage debugging information, placeholder for now
     debug_info = "Summary: " + summary + " ~~~Timings~~~ " + f"League Connect Duration: {league_connect_duration} seconds " + f"Summary Duration: {summary_duration} seconds "
     return summary, debug_info
+
+
+
+def generate_yahoo_summary(league_id, auth_path):
+    league_id = league_id
+    auth_directory = auth_path
+    sc = YahooFantasySportsQuery(
+        auth_dir=auth_directory,
+        league_id=league_id,
+        game_code="nfl"
+    )
+    mrw = yahoo_helper.get_most_recent_week(sc)
+    recap = yahoo_helper.generate_weekly_recap(sc, week=mrw)
+    return recap

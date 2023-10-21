@@ -1,17 +1,5 @@
 from yfpy.query import YahooFantasySportsQuery
 
-# # 1. Setup and Authentication
-# auth_directory = "path/to/auth"
-# league_id = "1234567"
-
-# # Initialize connection
-# sc = YahooFantasySportsQuery(
-#     auth_dir=auth_directory,
-#     league_id=league_id,
-#     game_code="nfl"
-# )
-
-# Calculate weekly summary here...
 def get_most_recent_week(sc):
     """
     Retrieves the most recently completed week in the fantasy league.
@@ -29,37 +17,6 @@ def get_most_recent_week(sc):
     completed_week = league_info.current_week - 1
     
     return completed_week
-
-# def display_top_teams(sc):
-#     """
-#     Displays the top 3 teams based on rank in the league standings.
-    
-#     Parameters:
-#     - sc (object): The YahooFantasySportsQuery object.
-    
-#     Returns:
-#     - None: Prints the team name, rank, and total points of the top 3 teams.
-#     """
-#     # Get the league standings data
-#     standings_data = sc.get_league_standings()
-    
-#     # Extracting the top 3 fantasy teams based on rank
-#     top_3_teams = sorted(standings_data.teams, key=lambda x: x.team_standings.rank)[:3]
-    
-#     # Creating a list to store formatted strings for each team
-#     teams_output = []
-    
-#     # Creating a list of ordinal indicators
-#     ordinal_indicators = ["1st", "2nd", "3rd"]
-    
-#     # Creating and appending formatted strings for each team
-#     for i, team in enumerate(top_3_teams):
-#         team_name = team.name.decode('utf-8')  # Decoding the byte string to a regular string
-#         team_points = team.team_points.total
-#         teams_output.append(f"{team_name} ({ordinal_indicators[i]} place - {team_points} points)")
-    
-#     # Joining the formatted strings and printing the result
-#     print(f"Current Standings: {', '.join(teams_output[:-1])}, and {teams_output[-1]}")
 
 def extract_team_ids(teams):
     """
@@ -277,7 +234,4 @@ def ordinal(n):
         suffix = {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th')
     return f"{n}{suffix}"
 
-# Assuming `sc` is your YahooFantasySportsQuery object and week is the desired week
-# mrw = get_most_recent_week(sc)
-# recap = generate_weekly_recap(sc, week=mrw)
-# print(recap)
+

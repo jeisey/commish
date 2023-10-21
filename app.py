@@ -3,13 +3,7 @@ import openai
 from streamlit.logger import get_logger
 from utils import summary_generator
 
-
 LOGGER = get_logger(__name__)
-
-def on_copy_click(text):
-    st.clipboard_write(text)
-    st.session_state['copied'] = True  # Update the session state to indicate the text has been copied
-
 
 def main():
     st.title("Fantasy Football Weekly Summary Generator")
@@ -64,26 +58,21 @@ def main():
                 openai_api_key=st.secrets["openai_api_key"]
                 openai.api_key=openai_api_key
 
-                summary, debug_info = summary_generator.get_espn_league_summary(
-                    league_id, espn2, swid 
-                )
-
+                if league_type == "ESPN":
+                    summary, debug_info = summary_generator.get_espn_league_summary(
+                        league_id, espn2, swid 
+                    )
+                elif league_type == "Yahoo":
+                    auth_directory = "auth"
+                    summary = summary_generator.get_yahoo_league_summary(
+                        league_id, auth_directory
+                    )
                 st.write(f'ESPN Summary: {summary}')
                 st.write(f'Debug Info: {debug_info}')
 
                 gpt4_summary_stream = summary_generator.generate_gpt4_summary_streaming(
                     summary, character_description, trash_talk_level
                 )
-
-                # with st.chat_message("Commish"):
-                #     message_placeholder = st.empty()
-                #     full_response = ""
-                #     for chunk in gpt4_summary_stream:
-                #         full_response += chunk
-                #         message_placeholder.markdown(full_response + "▌")
-                #     message_placeholder.markdown(full_response)
-                #     if st.button("📋 Copy to clipboard"):
-                #         on_copy_click(full_response)
                 
                 with st.chat_message("Commish"):
                     message_placeholder = st.empty()
