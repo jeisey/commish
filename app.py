@@ -17,10 +17,17 @@ def main():
     # st.title("Fantasy Football Weekly Summary Generator")
     st.write("""
     ## Instructions:
-    1. Select your league type from the sidebar.
-    2. Fill out the required fields based on your league selection.
-    3. Hit "Generate AI Summary" to get your weekly summary.
+
+    1. **Select your league type** from the sidebar.
+    2. **Fill out the required fields** based on your league selection:
+    - **ESPN**:
+        - *League ID*: [Find it here](https://support.espn.com/hc/en-us/articles/360045432432-League-ID).
+        - *SWID and ESPN_S2*: Use this [Chrome extension](https://chrome.google.com/webstore/detail/espn-private-league-key-a/bakealnpgdijapoiibbgdbogehhmaopn) or follow [manual steps](link_to_manual_steps).
+    - **Yahoo**:
+        - *League ID*: Navigate to Yahoo Fantasy Sports → Click your league → Mouse over **League**, click **Settings**. The League ID number is listed first.
+    3. **Hit "🤖Generate AI Summary"** to get your weekly summary.
     """)
+
 
     with st.sidebar:
         st.sidebar.image('logo.png', use_column_width=True)
