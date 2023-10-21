@@ -5,14 +5,18 @@ from utils import summary_generator
 
 LOGGER = get_logger(__name__)
 
+
+st.set_page_config(
+    page_title="Commish.ai - Fantasy Football Summary Generator",
+    page_icon="🏈",
+    layout="centered",
+    initial_sidebar_state="expanded",
+    theme={"primaryColor": "#F63366", "backgroundColor": "#262730", "secondaryBackgroundColor": "#2F2F38", "textColor": "#FAFAFA", "font": "sans serif"}
+)
+
+
 def main():
-    st.set_page_config(
-        page_title="Commish.ai - Fantasy Football Summary Generator",
-        page_icon="🏈",
-        layout="centered",
-        initial_sidebar_state="expanded",
-        theme={"primaryColor": "#F63366", "backgroundColor": "#262730", "secondaryBackgroundColor": "#2F2F38", "textColor": "#FAFAFA", "font": "sans serif"}
-    )
+
 
     st.title("Fantasy Football Weekly Summary Generator")
 
