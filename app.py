@@ -2,6 +2,7 @@ import streamlit as st
 import openai
 from streamlit.logger import get_logger
 from utils import summary_generator
+from utils.helper import check_availability
 
 LOGGER = get_logger(__name__)
 
@@ -31,7 +32,14 @@ def main():
 
     with st.sidebar:
         st.sidebar.image('logo.png', use_column_width=True)
-        st.header("Start here")
+        is_available, today = check_availability()
+        if is_available:
+            st.success(f"Today is {today}. The most recent week is completed and a recap is available.")
+        else:
+            st.warning(
+                "Recaps are best generated between Tuesday 4am EST and Thursday 7pm EST. "
+                "Please come back during this time for the most accurate recap."
+            )
         league_type = st.selectbox("Select League Type", ["Select", "ESPN", "Yahoo"], key='league_type')
 
     if league_type != "Select":
