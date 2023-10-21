@@ -43,8 +43,8 @@ def main():
             elif league_type == "Yahoo":
                 st.text_input("LeagueID", key='LeagueID')
             
-            st.text_input("Character Description", key='Character Description')
-            st.slider("Trash Talk Level", 1, 10, key='Trash Talk Level')
+            st.text_input("Character Description", key='Character Description', placeholder="Dwight Schrute")
+            st.slider("Trash Talk Level", 1, 10, key='Trash Talk Level', value=5)
             submit_button = st.form_submit_button(label='🤖Generate AI Summary')
 
     
