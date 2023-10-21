@@ -5,6 +5,15 @@ import openai
 import datetime
 import streamlit as st
 
+def moderate_text(text):
+    try:
+        response = openai.Moderation.create(input=text)
+        result = response['results'][0]
+        return not result['flagged']  # return True if text is ok, False if it's inappropriate
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        return False  # Assume text is inappropriate in case of an error
+
 
 # Lateny troubleshooting: https://platform.openai.com/docs/guides/production-best-practices/improving-latencies
 def generate_gpt4_summary_streaming(summary, character_choice, trash_talk_level):
