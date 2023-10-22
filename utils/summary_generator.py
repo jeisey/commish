@@ -49,7 +49,7 @@ def generate_gpt4_summary_streaming(summary, character_choice, trash_talk_level)
         print("Error details:", e)
         return "Failed to get response from GPT-4"
 
-@st.cache_data
+# @st.cache_data(ttl=3600) - Cannot hash argument 'league'
 def generate_espn_summary(league, cw):
     """
     Generate a human-friendly summary based on the league stats.
@@ -127,7 +127,7 @@ def generate_espn_summary(league, cw):
     
     return summary.strip()
 
-@st.cache_data
+@st.cache_data(ttl=3600)
 def get_espn_league_summary(league_id, espn2, SWID):
     # Fetch data from ESPN Fantasy API and compute statistics   
     start_time_league_connect = datetime.datetime.now() 
@@ -152,7 +152,7 @@ def get_espn_league_summary(league_id, espn2, SWID):
     debug_info = "Summary: " + summary + " ~~~Timings~~~ " + f"League Connect Duration: {league_connect_duration} seconds " + f"Summary Duration: {summary_duration} seconds "
     return summary, debug_info
 
-@st.cache_data
+@st.cache_data(ttl=3600)
 def get_yahoo_league_summary(league_id, auth_path):
     league_id = league_id
     auth_directory = auth_path
