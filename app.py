@@ -47,7 +47,7 @@ def main():
             if league_type == "ESPN":
                 st.text_input("LeagueID", key='LeagueID')
                 st.text_input("SWID", key='SWID')
-                st.text_input("ESPN2_Id", key='ESPN2_Id')
+                st.text_input("ESPN_S2", key='ESPN2_Id')
             elif league_type == "Yahoo":
                 st.text_input("LeagueID", key='LeagueID')
             
