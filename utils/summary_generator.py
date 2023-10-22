@@ -32,7 +32,7 @@ def generate_gpt4_summary_streaming(summary, character_choice, trash_talk_level)
     try:
         # Send the messages to OpenAI's GPT-4 for analysis
         response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo", #options: gpt-4, gpt-3.5-turbo
+            model="gpt-4", #options: gpt-4, gpt-3.5-turbo
             messages=messages,
             max_tokens=800,  # Control response lnegth
             stream=True
