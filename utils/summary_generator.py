@@ -20,7 +20,7 @@ def generate_gpt4_summary_streaming(summary, character_choice, trash_talk_level)
     # Construct the instruction for GPT-4 based on user inputs
     instruction = f"You will be provided a summary below containing the most recent weekly stats for a fantasy football league. \
     Create a weekly recap in the style of {character_choice}. Do not just repeat every single state verbatim. You should include trash talk with a level of {trash_talk_level} based on a scale of 1-10 (1 being no trash talk, 10 being excessive trash talk); feel free to make fun of (or praise) team names and performances, and add a touch of humor related to the chosen character. \
-    Keep your summary concise enough as to not overwhelm the user with stats but still engaging, funny, thematic, and insightful. Only respond in character and do not reply with anything other than your recap. Begin by introducing \
+    Keep your summary concise enough (under 600 characters) as to not overwhelm the user with stats but still engaging, funny, thematic, and insightful. Only respond in character and do not reply with anything other than your recap. Begin by introducing \
     your character. Here is the weekly fantasy summary: {summary}"
     
     # Create the messages array
@@ -34,7 +34,7 @@ def generate_gpt4_summary_streaming(summary, character_choice, trash_talk_level)
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo", #options: gpt-4, gpt-3.5-turbo
             messages=messages,
-            max_tokens=600,  # Control response lnegth
+            max_tokens=800,  # Control response lnegth
             stream=True
         )
         # Extract and return the GPT-4 generated message
