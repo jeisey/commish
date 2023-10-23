@@ -3,6 +3,7 @@ name: Update Players Data JSON
 on:
   schedule:
     - cron: '0 8 * * 2'  # Every Tuesday at 4:00 AM EST (8:00 AM UTC)
+  workflow_dispatch:
 
 jobs:
   update_data:
