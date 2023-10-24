@@ -1,6 +1,6 @@
 espn-api
 openai
 pytz
-yfpy==13.0.0
+yfpy
 sleeper-api-wrapper
 streamlit
