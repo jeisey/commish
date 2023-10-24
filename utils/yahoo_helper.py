@@ -206,11 +206,8 @@ def generate_weekly_recap(sc, week):
     - str: A string containing the weekly recap.
     """
     # Get relevant data
-    print("getting teams...") #temp - remove
     teams = sc.get_league_teams()
-    print(teams) #temp - remove
     team_ids = extract_team_ids(teams)
-    print(team_ids) #temp - remove
     highest_scorer, lowest_scorer, highest_scorer_bench, lowest_scorer_started, most_banged_up_team = find_extreme_scorers_and_banged_up_team(sc, team_ids, week)
     analysis_result = analyze_weekly_performance(sc, week)
     
