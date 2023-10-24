@@ -26,6 +26,8 @@ def main():
         - *SWID and ESPN_S2*: Use this [Chrome extension](https://chrome.google.com/webstore/detail/espn-private-league-key-a/bakealnpgdijapoiibbgdbogehhmaopn) or follow [manual steps](https://www.gamedaybot.com/help/espn_s2-and-swid/).
     - **Yahoo**:
         - *League ID*: Navigate to Yahoo Fantasy Sports → Click your league → Mouse over **League**, click **Settings**. The League ID number is listed first.
+    - **Sleeper**:
+        - *League ID*: [Find it here](https://support.sleeper.com/en/articles/4121798-how-do-i-find-my-league-id). 
     3. **Hit "🤖Generate AI Summary"** to get your weekly summary.
     """)
 
@@ -40,7 +42,7 @@ def main():
                 "Recaps are best generated between Tuesday 4am EST and Thursday 7pm EST. "
                 "Please come back during this time for the most accurate recap."
             )
-        league_type = st.selectbox("Select League Type", ["Select", "ESPN", "Yahoo"], key='league_type')
+        league_type = st.selectbox("Select League Type", ["Select", "ESPN", "Yahoo", "Sleeper"], key='league_type')
 
     if league_type != "Select":
         with st.sidebar.form(key='my_form'):
@@ -49,6 +51,8 @@ def main():
                 st.text_input("SWID", key='SWID')
                 st.text_input("ESPN_S2", key='ESPN2_Id')
             elif league_type == "Yahoo":
+                st.text_input("LeagueID", key='LeagueID')
+            elif league_type == "Sleeper":
                 st.text_input("LeagueID", key='LeagueID')
             
             st.text_input("Character Description", key='Character Description', placeholder="Dwight Schrute", help= "Describe a persona for the AI to adopt. E.g. 'Dwight Schrute' or 'A very drunk Captain Jack Sparrow'")
@@ -98,6 +102,11 @@ def main():
                             auth_directory = "auth"
                             summary = summary_generator.get_yahoo_league_summary(
                                 league_id, auth_directory
+                            )
+                        elif league_type == "Sleeper":
+                            auth_directory = "auth"
+                            summary = summary_generator.generate_sleeper_summary(
+                                league_id, 7 #replace with func inside for current week
                             )
                         
                         status.text('Generating AI summary...')

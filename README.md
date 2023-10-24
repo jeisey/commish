@@ -2,8 +2,8 @@
 
 Generate engaging weekly recaps for your Fantasy Football league with the help of AI 🤖.
 
-- Supports **ESPN** and **Yahoo** leagues.
-- Powered by **OpenAI GPT-3.5-turbo**.
+- Supports **ESPN**, **Sleeper**, and **Yahoo** leagues.
+- Powered by **OpenAI GPT-4**.
 - Free to use!
 
 ## Usage
@@ -16,6 +16,8 @@ Getting your league ID is required for both ESPN and Yahoo. However, ESPN addtio
         - *SWID and ESPN_S2*: Use this [Chrome extension](https://chrome.google.com/webstore/detail/espn-private-league-key-a/bakealnpgdijapoiibbgdbogehhmaopn) or follow [manual steps](https://www.gamedaybot.com/help/espn_s2-and-swid/).
 - **Yahoo**:
         - *League ID*: Navigate to Yahoo Fantasy Sports → Click your league → Mouse over **League**, click **Settings**. The League ID number is listed first.
+- **Sleeper**:
+        - *League ID*: [Find it here](https://support.sleeper.com/en/articles/4121798-how-do-i-find-my-league-id).
 
 ## Features
 

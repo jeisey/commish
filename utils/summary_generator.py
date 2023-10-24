@@ -1,6 +1,6 @@
 from espn_api.football import League
 from yfpy.query import YahooFantasySportsQuery
-from utils import espn_helper, yahoo_helper
+from utils import espn_helper, yahoo_helper, sleeper_helper
 import openai
 import datetime
 import streamlit as st
@@ -164,3 +164,72 @@ def get_yahoo_league_summary(league_id, auth_path):
     mrw = yahoo_helper.get_most_recent_week(sc)
     recap = yahoo_helper.generate_weekly_recap(sc, week=mrw)
     return recap
+
+
+@st.cache_data(ttl=3600)
+def generate_sleeper_summary(league_id, week):
+    # Initialize the Sleeper API League object
+    league = League(league_id)
+    
+    # Get necessary data from the league
+    rosters = league.get_rosters()
+    users = league.get_users()
+    matchups = league.get_matchups(week)
+    standings = league.get_standings(rosters, users)
+
+    # Get weekly players data from public json file
+    players_url = "https://raw.githubusercontent.com/jeisey/commish/main/players_data.json"
+    players_data = sleeper_helper.load_player_data(players_url)
+
+    # Generate mappings
+    user_team_mapping = league.map_users_to_team_name(users)
+    roster_owner_mapping = league.map_rosterid_to_ownerid(rosters)
+    
+    # Generate scoreboards for the week
+    scoreboards = league.get_scoreboards(rosters=rosters, matchups=matchups, users=users, score_type="pts_std", week=week)
+
+    # 1. Highest Scoring Team of the Week
+    highest_scoring_team_name, highest_scoring_team_score = sleeper_helper.highest_scoring_team_of_week(scoreboards)
+
+    # 2. Standings; Top 3 Teams
+    top_3_teams_result = sleeper_helper.top_3_teams(standings)
+    
+    # 3. Highest Scoring Player of the Week
+    highest_scoring_player_week, weekly_score, highest_scoring_player_team_week = sleeper_helper.highest_scoring_player_of_week(matchups, players_data, user_team_mapping, roster_owner_mapping)
+
+    # 4. Lowest Scoring Player of the Week that Started
+    lowest_scoring_starter, lowest_starter_score, lowest_scoring_starter_team = sleeper_helper.lowest_scoring_starter_of_week(matchups, players_data, user_team_mapping, roster_owner_mapping)
+
+    # 5. Highest Scoring Benched Player of the Week
+    highest_scoring_benched_player, highest_benched_score, highest_scoring_benched_player_team = sleeper_helper.highest_scoring_benched_player_of_week(matchups, players_data, user_team_mapping, roster_owner_mapping)
+
+    # 6. Biggest Blowout Match of the Week
+    blowout_teams, point_differential_blowout = sleeper_helper.biggest_blowout_match_of_week(scoreboards)
+
+    # 7. Closest Match of the Week
+    close_teams, point_differential_close = sleeper_helper.closest_match_of_week(scoreboards)
+
+    # 8. Team with Most Moves
+    team_most_moves, most_moves = sleeper_helper.team_with_most_moves(rosters, user_team_mapping, roster_owner_mapping)
+    
+    # 9. Team on Hottest Streak
+    hottest_streak_team, longest_streak = sleeper_helper.team_on_hottest_streak(rosters, user_team_mapping, roster_owner_mapping)
+    
+
+    # Construct the summary string
+    summary = (
+        f"The highest scoring team of the week: {highest_scoring_team_name} with {round(highest_scoring_team_score,2)} points\n"
+        f"Standings; Top 3 Teams:\n"
+        f"  1. {top_3_teams_result[0][0]} - {top_3_teams_result[0][3]} points ({top_3_teams_result[0][1]}W-{top_3_teams_result[0][2]}L)\n"
+        f"  2. {top_3_teams_result[1][0]} - {top_3_teams_result[1][3]} points ({top_3_teams_result[1][1]}W-{top_3_teams_result[1][2]}L)\n"
+        f"  3. {top_3_teams_result[2][0]} - {top_3_teams_result[2][3]} points ({top_3_teams_result[2][1]}W-{top_3_teams_result[2][2]}L)\n"
+        f"Highest scoring player of the week: {highest_scoring_player_week} with {weekly_score} points (Team: {highest_scoring_player_team_week})\n"
+        f"Lowest scoring player of the week that started: {lowest_scoring_starter} with {lowest_starter_score} points (Team: {lowest_scoring_starter_team})\n"
+        f"Highest scoring benched player of the week: {highest_scoring_benched_player} with {highest_benched_score} points (Team: {highest_scoring_benched_player_team})\n"
+        f"Biggest blowout match of the week: {blowout_teams[0]} vs {blowout_teams[1]} (Point Differential: {round(point_differential_blowout,2)})\n"
+        f"Closest match of the week: {close_teams[0]} vs {close_teams[1]} (Point Differential: {round(point_differential_close,2)})\n"
+        f"Team with the most moves: {team_most_moves} with {most_moves} moves\n"
+        f"Team on the hottest streak: {hottest_streak_team} with a {longest_streak} game win streak"
+    )
+    
+    return summary
