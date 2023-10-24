@@ -1,4 +1,4 @@
-name: Update Players Data JSON
+name: Update Players Data
 
 on:
   schedule:
