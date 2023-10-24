@@ -8,7 +8,7 @@ Generate engaging weekly recaps for your Fantasy Football league with the help o
 
 ## Usage
 
-Best utilized between **Tuesday 4am EST and Thursday 7pm EST** during the standard "down-time" between fantasy weeks.
+Best utilized between **Tuesday 4am EST and Thursday 7pm EST** during the standard "down-time" between fantasy weeks. Data will generally be forced to display for the most recent completed week. A notification will display green when recaps are ready and yellow when you're in the middle of active games (an incomplte week).
 
 Getting your league ID is required for both ESPN and Yahoo. However, ESPN addtionally requires a SWID and ESPN_S2 id which can be collected with a simple chrome extension or manually by inspecting cookies in the browser:
 - **ESPN**:

@@ -1,7 +1,7 @@
 from espn_api.football import League
 from yfpy.query import YahooFantasySportsQuery
 from sleeper_wrapper import League as SleeperLeague
-from utils import espn_helper, yahoo_helper, sleeper_helper
+from utils import espn_helper, yahoo_helper, sleeper_helper, helper
 import openai
 import datetime
 import streamlit as st
@@ -168,10 +168,10 @@ def get_yahoo_league_summary(league_id, auth_path):
 
 
 @st.cache_data(ttl=3600)
-def generate_sleeper_summary(league_id, week):
+def generate_sleeper_summary(league_id):
     # Initialize the Sleeper API League object
     league = SleeperLeague(league_id)
-    
+    week = helper.get_current_week()-1 #force to always be most recent completed week
     # Get necessary data from the league
     rosters = league.get_rosters()
     users = league.get_users()
@@ -187,7 +187,7 @@ def generate_sleeper_summary(league_id, week):
     roster_owner_mapping = league.map_rosterid_to_ownerid(rosters)
     
     # Generate scoreboards for the week
-    scoreboards = league.get_scoreboards(rosters=rosters, matchups=matchups, users=users, score_type="pts_std", week=week)
+    scoreboards = sleeper_helper.calculate_scoreboards(matchups, user_team_mapping, roster_owner_mapping)
 
     # 1. Highest Scoring Team of the Week
     highest_scoring_team_name, highest_scoring_team_score = sleeper_helper.highest_scoring_team_of_week(scoreboards)
@@ -210,8 +210,8 @@ def generate_sleeper_summary(league_id, week):
     # 7. Closest Match of the Week
     close_teams, point_differential_close = sleeper_helper.closest_match_of_week(scoreboards)
 
-    # 8. Team with Most Moves
-    team_most_moves, most_moves = sleeper_helper.team_with_most_moves(rosters, user_team_mapping, roster_owner_mapping)
+    # 8. Team with Most Moves (this always seems to be zero, UPDATE)
+    # team_most_moves, most_moves = sleeper_helper.team_with_most_moves(rosters, user_team_mapping, roster_owner_mapping)
     
     # 9. Team on Hottest Streak
     hottest_streak_team, longest_streak = sleeper_helper.team_on_hottest_streak(rosters, user_team_mapping, roster_owner_mapping)
@@ -229,7 +229,7 @@ def generate_sleeper_summary(league_id, week):
         f"Highest scoring benched player of the week: {highest_scoring_benched_player} with {highest_benched_score} points (Team: {highest_scoring_benched_player_team})\n"
         f"Biggest blowout match of the week: {blowout_teams[0]} vs {blowout_teams[1]} (Point Differential: {round(point_differential_blowout,2)})\n"
         f"Closest match of the week: {close_teams[0]} vs {close_teams[1]} (Point Differential: {round(point_differential_close,2)})\n"
-        f"Team with the most moves: {team_most_moves} with {most_moves} moves\n"
+        # f"Team with the most moves: {team_most_moves} with {most_moves} moves\n" #These always seems to be zero
         f"Team on the hottest streak: {hottest_streak_team} with a {longest_streak} game win streak"
     )
     

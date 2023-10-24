@@ -174,3 +174,25 @@ def team_on_hottest_streak(rosters, user_team_mapping, roster_owner_mapping):
             
     return team_on_hottest_streak, longest_streak
 
+
+def calculate_scoreboards(matchups, user_team_mapping, roster_owner_mapping):
+    matchups_dict = {}
+    for matchup in matchups:
+        roster_id = matchup['roster_id']
+        owner_id = roster_owner_mapping.get(roster_id)
+        team_name = user_team_mapping.get(owner_id, "Unknown Team")
+        total_points = matchup.get('points', 0)
+        matchup_id = matchup.get('matchup_id')
+        
+        if matchup_id not in matchups_dict:
+            matchups_dict[matchup_id] = []
+        matchups_dict[matchup_id].append((team_name, total_points))
+    
+    # Sort the matchups by total points in descending order
+    for key in matchups_dict:
+        matchups_dict[key] = sorted(matchups_dict[key], key=lambda x: -x[1])
+    
+    return matchups_dict
+
+
+
