@@ -157,11 +157,13 @@ def get_espn_league_summary(league_id, espn2, SWID):
 def get_yahoo_league_summary(league_id, auth_path):
     league_id = league_id
     auth_directory = auth_path
+    print("authenticating app...")
     sc = YahooFantasySportsQuery(
         auth_dir=auth_directory,
         league_id=league_id,
         game_code="nfl"
     )
+    print("authenticated")
     mrw = yahoo_helper.get_most_recent_week(sc)
     recap = yahoo_helper.generate_weekly_recap(sc, week=mrw)
     return recap

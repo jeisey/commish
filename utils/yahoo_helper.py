@@ -206,6 +206,7 @@ def generate_weekly_recap(sc, week):
     - str: A string containing the weekly recap.
     """
     # Get relevant data
+    print("getting teams...") #temp - remove
     teams = sc.get_league_teams()
     print(teams) #temp - remove
     team_ids = extract_team_ids(teams)
