@@ -176,7 +176,8 @@ def get_yahoo_league_summary(league_id, auth_path):
 def generate_sleeper_summary(league_id):
     # Initialize the Sleeper API League object
     league = SleeperLeague(league_id)
-    week = helper.get_current_week()-1 #force to always be most recent completed week
+    current_date_today = datetime.now()
+    week = helper.get_current_week(current_date_today)-1 #force to always be most recent completed week
     # Get necessary data from the league
     rosters = league.get_rosters()
     users = league.get_users()
