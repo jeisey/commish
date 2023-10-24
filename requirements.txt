@@ -2,5 +2,5 @@ espn-api
 openai
 pytz
 yfpy==13.0.0
-sleeper-api-wrapper==1.0.7
+git+https://github.com/jeisey/sleeper-api-wrapper-commish.git@master#egg=sleeper-api-wrapper
 streamlit
