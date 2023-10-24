@@ -28,7 +28,7 @@ def main():
         - *League ID*: Navigate to Yahoo Fantasy Sports → Click your league → Mouse over **League**, click **Settings**. The League ID number is listed first.
     - **Sleeper**:
         - *League ID*: [Find it here](https://support.sleeper.com/en/articles/4121798-how-do-i-find-my-league-id). 
-    3. **Hit "🤖Generate AI Summary"** to get your weekly summary.
+    3. **Hit "🤖 Generate AI Summary"** to get your weekly summary.
     """)
 
 
@@ -57,7 +57,7 @@ def main():
             
             st.text_input("Character Description", key='Character Description', placeholder="Dwight Schrute", help= "Describe a persona for the AI to adopt. E.g. 'Dwight Schrute' or 'A very drunk Captain Jack Sparrow'")
             st.slider("Trash Talk Level", 1, 10, key='Trash Talk Level', value=5, help="Scale of 1 to 10, where 1 is friendly banter and 10 is more extreme trash talk")
-            submit_button = st.form_submit_button(label='🤖Generate AI Summary')
+            submit_button = st.form_submit_button(label='🤖 Generate AI Summary')
 
     
         # Handling form 

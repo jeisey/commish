@@ -1,4 +1,6 @@
 from yfpy.query import YahooFantasySportsQuery
+from streamlit.logger import get_logger
+LOGGER = get_logger(__name__)
 
 def get_most_recent_week(sc):
     """
@@ -10,13 +12,15 @@ def get_most_recent_week(sc):
     Returns:
     - int: The most recently completed week.
     """
-    # Retrieve the league information
-    league_info = sc.get_league_info()
-    
-    # Access the 'current_week' attribute and subtract 1 to get the completed week
-    completed_week = league_info.current_week - 1
-    
-    return completed_week
+    try:
+        league_info = sc.get_league_info()
+        completed_week = league_info.current_week - 1
+        LOGGER.info(f"Most recent week retrieved successfully: {completed_week}")
+        return completed_week
+    except Exception as e:
+        LOGGER.exception("Failed to get the most recent week")
+        raise e  # Reraise the exception after logging it
+
 
 def extract_team_ids(teams):
     """
@@ -28,7 +32,12 @@ def extract_team_ids(teams):
     Returns:
     - dict: A dictionary mapping team ids to team names.
     """
-    return {team.team_id: team.name for team in teams}
+    try:
+        return {team.team_id: team.name for team in teams}
+    except Exception as e:
+        LOGGER.exception("Failed to get the most recent week")
+        raise e  # Reraise the exception after logging it
+
 
 def find_extreme_scorers_and_banged_up_team(sc, team_ids, week=3):
     """
