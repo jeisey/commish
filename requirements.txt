@@ -7,7 +7,7 @@ certifi==2023.7.22
 charset-normalizer==3.2.0
 click==8.1.7
 colorama==0.4.6
-espn-api==0.31.0
+espn-api
 Flask==2.3.3
 Flask-Cors==4.0.0
 frozenlist==1.4.0
@@ -26,6 +26,6 @@ tqdm==4.66.1
 urllib3==2.0.4
 Werkzeug==2.3.7
 yarl==1.9.2
-yfpy==13.0.0
+yfpy
 sleeper-api-wrapper
 streamlit
