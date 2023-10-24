@@ -27,16 +27,18 @@ def extract_team_ids(teams):
     Extracts team ids and names from the provided teams data.
     
     Parameters:
-    - teams (list): A list of Team instances.
+    - teams (list): A list of Team instances or dictionaries.
     
     Returns:
     - dict: A dictionary mapping team ids to team names.
     """
     try:
+        # Attempt to extract ids and names assuming teams is a list of objects
         return {team.team_id: team.name for team in teams}
-    except Exception as e:
-        LOGGER.exception("Failed to get the most recent week")
-        raise e  # Reraise the exception after logging it
+    except AttributeError:
+        # If an AttributeError occurs, assume teams is a list of dictionaries
+        return {team['team_id']: team['name'] for team in teams}
+
 
 
 def find_extreme_scorers_and_banged_up_team(sc, team_ids, week=3):
