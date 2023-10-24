@@ -3,7 +3,7 @@ import openai
 from streamlit.logger import get_logger
 from utils import summary_generator
 from utils.helper import check_availability
-
+import traceback
 
 LOGGER = get_logger(__name__)
 
@@ -140,6 +140,7 @@ def main():
             except Exception as e:
                 st.error(f"An error occurred: {str(e)}")
                 LOGGER.exception(e)
+                st.text(traceback.format_exc())
 
 if __name__ == "__main__":
     main()

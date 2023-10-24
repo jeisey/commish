@@ -5,6 +5,9 @@ from utils import espn_helper, yahoo_helper, sleeper_helper, helper
 import openai
 import datetime
 import streamlit as st
+from streamlit.logger import get_logger
+LOGGER = get_logger(__name__)
+
 
 def moderate_text(text):
     try:
@@ -154,14 +157,16 @@ def get_espn_league_summary(league_id, espn2, SWID):
     return summary, debug_info
 
 @st.cache_data(ttl=3600)
-def get_yahoo_league_summary(league_id, auth_path):
+def get_yahoo_league_summary(league_id, auth_path):    
     league_id = league_id
+    LOGGER.info(f"League id: {league_id}")
     auth_directory = auth_path
     sc = YahooFantasySportsQuery(
         auth_dir=auth_directory,
         league_id=league_id,
         game_code="nfl"
     )
+    LOGGER.info(f"sc: {sc}")
     mrw = yahoo_helper.get_most_recent_week(sc)
     recap = yahoo_helper.generate_weekly_recap(sc, week=mrw)
     return recap
