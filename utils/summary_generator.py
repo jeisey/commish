@@ -1,5 +1,6 @@
 from espn_api.football import League
 from yfpy.query import YahooFantasySportsQuery
+from sleeper_wrapper import League as SleeperLeague
 from utils import espn_helper, yahoo_helper, sleeper_helper
 import openai
 import datetime
@@ -169,7 +170,7 @@ def get_yahoo_league_summary(league_id, auth_path):
 @st.cache_data(ttl=3600)
 def generate_sleeper_summary(league_id, week):
     # Initialize the Sleeper API League object
-    league = League(league_id)
+    league = SleeperLeague(league_id)
     
     # Get necessary data from the league
     rosters = league.get_rosters()
