@@ -3,7 +3,6 @@ import openai
 from streamlit.logger import get_logger
 from utils import summary_generator
 from utils.helper import check_availability
-from utils.yahoo_auth import cleanup_temp_dir
 import traceback
 import requests
 import json
@@ -123,35 +122,33 @@ def main():
 
                     # Allow user to input league ID
                     # league_id = st.text_input("Enter your Yahoo Fantasy Sports league ID:")
-                    
+                    temp_dir = tempfile.mkdtemp()
                     if league_id:
-                        # Create a temporary directory to store the token and private files
-                        with tempfile.TemporaryDirectory() as temp_dir:
-                            # Define the paths to the token and private files
-                            token_file_path = os.path.join(temp_dir, "token.json")
-                            private_file_path = os.path.join(temp_dir, "private.json")
+                        # Define the paths to the token and private files
+                        token_file_path = os.path.join(temp_dir, "token.json")
+                        private_file_path = os.path.join(temp_dir, "private.json")
 
-                            # Create the token file with all necessary details
-                            token_data = {
-                                "access_token": st.session_state['access_token'],
-                                "consumer_key": cid,
-                                "consumer_secret": cse,
-                                "guid": None,
-                                "refresh_token": st.session_state['refresh_token'],
-                                "expires_in": 3600, 
-                                "token_time": st.session_state['token_time'],
-                                "token_type": "bearer"
-                                }
-                            with open(token_file_path, 'w') as f:
-                                json.dump(token_data, f)
-
-                            # Create the private file with consumer key and secret
-                            private_data = {
-                                "consumer_key": cid,
-                                "consumer_secret": cse,
+                        # Create the token file with all necessary details
+                        token_data = {
+                            "access_token": st.session_state['access_token'],
+                            "consumer_key": cid,
+                            "consumer_secret": cse,
+                            "guid": None,
+                            "refresh_token": st.session_state['refresh_token'],
+                            "expires_in": 3600, 
+                            "token_time": st.session_state['token_time'],
+                            "token_type": "bearer"
                             }
-                            with open(private_file_path, 'w') as f:
-                                json.dump(private_data, f)
+                        with open(token_file_path, 'w') as f:
+                            json.dump(token_data, f)
+
+                        # Create the private file with consumer key and secret
+                        private_data = {
+                            "consumer_key": cid,
+                            "consumer_secret": cse,
+                        }
+                        with open(private_file_path, 'w') as f:
+                            json.dump(private_data, f)
             elif league_type == "Sleeper":
                 st.text_input("LeagueID", key='LeagueID')
             
@@ -206,7 +203,7 @@ def main():
                 elif league_type == "Yahoo":
                     summary = summary_generator.get_yahoo_league_summary(league_id, temp_dir)
                     st.write("Completed summary query, cleaning up...")
-                    cleanup_temp_dir(temp_dir)
+                    shutil.rmtree(temp_dir)
                     st.write("Done with cleanup! Creating AI summary now...")
                     # auth_directory = "auth"
                     # auth_directory = authenticate_yahoo() #new version
