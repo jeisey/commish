@@ -89,9 +89,9 @@ def authenticate_yahoo():
             with open(private_file_path, 'w') as f:
                 json.dump(private_data, f)
 
-            return temp_dir, st.session_state['access_token'], st.session_state['refresh_token']
+            return temp_dir #, st.session_state['access_token'], st.session_state['refresh_token']
         
-    return None, None
+    return None
 
 
 def cleanup_temp_dir(temp_dir):
