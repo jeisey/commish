@@ -3,6 +3,7 @@ import openai
 from streamlit.logger import get_logger
 from utils import summary_generator
 from utils.helper import check_availability
+from utils.yahoo_auth import authenticate_yahoo, cleanup_temp_dir
 import traceback
 
 LOGGER = get_logger(__name__)
@@ -104,10 +105,16 @@ def main():
                         league_id, espn2, swid 
                     )
                 elif league_type == "Yahoo":
-                    auth_directory = "auth"
-                    summary = summary_generator.get_yahoo_league_summary(
-                        league_id, auth_directory
-                    )
+                    # auth_directory = "auth"
+                    auth_directory, access_token, refresh_token = authenticate_yahoo()
+                    # summary = summary_generator.get_yahoo_league_summary(
+                    #     league_id, auth_directory
+                    # )
+                    if auth_directory:
+                        summary = summary_generator.get_yahoo_league_summary(league_id, auth_directory)
+                        cleanup_temp_dir(auth_directory)
+                    else:
+                        st.error("Authentication failed. Please try again.")
                 elif league_type == "Sleeper":
                     auth_directory = "auth"
                     summary = summary_generator.generate_sleeper_summary(
