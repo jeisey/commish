@@ -93,7 +93,7 @@ def main():
                 if auth_code:
                     st.session_state['auth_code'] = auth_code
                     st.success('Authorization code received!')
-                    st.write(f'Your authorization code is: {auth_code}')
+                    #st.write(f'Your authorization code is: {auth_code}')
 
                 # Get the token
                 if st.session_state['auth_code'] and not st.session_state['access_token']:
@@ -119,7 +119,7 @@ def main():
 
                 # Use the access token
                 if st.session_state['access_token']:
-                    st.write("Now you can use the access token to interact with Yahoo's API.")
+                    #st.write("Now you can use the access token to interact with Yahoo's API.")
 
                     # Allow user to input league ID
                     # league_id = st.text_input("Enter your Yahoo Fantasy Sports league ID:")
