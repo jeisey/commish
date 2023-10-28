@@ -60,6 +60,7 @@ def main():
                 st.text_input("ESPN_S2", key='ESPN2_Id')
             elif league_type == "Yahoo":
                 # Client_ID and Secret from https://developer.yahoo.com/apps/
+                league_id = st.text_input("LeagueID", key='LeagueID')
                 cid = st.secrets["YAHOO_CLIENT_ID"]
                 cse = st.secrets["YAHOO_CLIENT_SECRET"]
 
@@ -122,7 +123,7 @@ def main():
 
                     # Allow user to input league ID
                     # league_id = st.text_input("Enter your Yahoo Fantasy Sports league ID:")
-                    league_id = st.text_input("LeagueID", key='LeagueID')
+                    
                     if league_id:
                         # Create a temporary directory to store the token and private files
                         with tempfile.TemporaryDirectory() as temp_dir:
