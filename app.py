@@ -106,7 +106,7 @@ def main():
                     )
                 elif league_type == "Yahoo":
                     # auth_directory = "auth"
-                    auth_directory, access_token, refresh_token = authenticate_yahoo()
+                    auth_directory = authenticate_yahoo()
                     # summary = summary_generator.get_yahoo_league_summary(
                     #     league_id, auth_directory
                     # )
