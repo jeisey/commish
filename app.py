@@ -202,6 +202,7 @@ def main():
                 progress.text('Fetching league summary...')
                 progress.progress(30)
                 if league_type == "ESPN":
+                    LOGGER.debug("Attempting ESPN summary generator...")
                     summary, debug_info = summary_generator.get_espn_league_summary(
                         league_id, espn2, swid 
                     )
