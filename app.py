@@ -205,8 +205,10 @@ def main():
                     summary, debug_info = summary_generator.get_espn_league_summary(
                         league_id, espn2, swid 
                     )
+                    LOGGER.debug(summary)
                 elif league_type == "Yahoo":
                     summary = summary_generator.get_yahoo_league_summary(league_id, temp_dir)
+                    LOGGER.debug(summary)
                     st.write("Completed summary query, cleaning up...")
                     shutil.rmtree(temp_dir)
                     st.write("Done with cleanup! Creating AI summary now...")
@@ -225,6 +227,8 @@ def main():
                     auth_directory = "auth"
                     summary = summary_generator.generate_sleeper_summary(
                         league_id
+                    LOGGER.debug(summary)
+                        
                     )
                 
                 progress.text('Generating AI summary...')
@@ -235,6 +239,7 @@ def main():
                 gpt4_summary_stream = summary_generator.generate_gpt4_summary_streaming(
                     summary, character_description, trash_talk_level
                 )
+                LOGGER.debug(gpt4_summary_stream)
                 LOGGER.debug("Recieved GPT Summary. Attempting GPT Stream...")
                 with st.chat_message("Commish", avatar="🤖"):
                     message_placeholder = st.empty()
