@@ -32,6 +32,7 @@ def generate_gpt4_summary_streaming(summary, character_choice, trash_talk_level)
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": instruction}
     ]
+    LOGGER.debug("__GPT4__FUNCTION SENDING MESSAGES TO GPT")
     
     try:
         # Send the messages to OpenAI's GPT-4 for analysis
@@ -42,6 +43,7 @@ def generate_gpt4_summary_streaming(summary, character_choice, trash_talk_level)
             stream=True
         )
         # Extract and return the GPT-4 generated message
+        LOGGER.debug("__GPT4__FUNCTION MESSAGES SENT SUCCESSFULLY TO GPT. RETREVIEING RESPONSE...")
         for chunk in response:
             # Check if 'content' key exists
             if 'content' in chunk.choices[0].delta:
@@ -49,6 +51,7 @@ def generate_gpt4_summary_streaming(summary, character_choice, trash_talk_level)
             else:
                 print("End of stream or unexpected structure detected.")
                 break
+        LOGGER.debug("__GPT4__FUNCTION RESPONSE SUCCESSFULLY RECIEVED.")
     except Exception as e:
         print("Error details:", e)
         return "Failed to get response from GPT-4"

@@ -183,9 +183,13 @@ def main():
                 swid = st.session_state.get('SWID', 'Not provided')
                 espn2 = st.session_state.get('ESPN2_Id', 'Not provided')
                 
+                LOGGER.debug("Retrieving OpenAI Keys")
+
                 # Fetch open ai key
                 openai_api_key = st.secrets["openai_api_key"]
                 openai.api_key = openai_api_key
+                LOGGER.debug("Successfully retrieved OpenAI Keys")
+
 
                 # Moderate the character description
                 progress.text('Validating character...')
@@ -225,10 +229,13 @@ def main():
                 
                 progress.text('Generating AI summary...')
                 progress.progress(50)
+
+                LOGGER.debug("Attempting GPT Summary")
+
                 gpt4_summary_stream = summary_generator.generate_gpt4_summary_streaming(
                     summary, character_description, trash_talk_level
                 )
-                
+                LOGGER.debug("Recieved GPT Summary. Attempting GPT Stream...")
                 with st.chat_message("Commish", avatar="🤖"):
                     message_placeholder = st.empty()
                     full_response = ""
@@ -243,6 +250,7 @@ def main():
                     st.code(full_response, language="")
                     st.markdown("Don't like this one? Try entering a **new character** and it will **start generating immediately**.")
                     
+                LOGGER.debug("GPT Stream done!")
                 progress.text('Done!')
                 progress.progress(100)
                 
