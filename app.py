@@ -205,6 +205,7 @@ def main():
                     summary, debug_info = summary_generator.get_espn_league_summary(
                         league_id, espn2, swid 
                     )
+                    LOGGER.debug("~~ESPN SUMMARY BELOW~~")
                     LOGGER.debug(summary)
                 elif league_type == "Yahoo":
                     summary = summary_generator.get_yahoo_league_summary(league_id, temp_dir)
