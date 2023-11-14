@@ -190,9 +190,9 @@ def main():
                 # Moderate the character description
                 progress.text('Validating character...')
                 progress.progress(15)
-                if not summary_generator.moderate_text(character_description):
-                    st.error("The character description contains inappropriate content. Please try again.")
-                    return  # Stop execution if moderation fails
+                # if not summary_generator.moderate_text(character_description):
+                #     st.error("The character description contains inappropriate content. Please try again.")
+                #     return  # Stop execution if moderation fails
                 
                 # Fetching league summary
                 progress.text('Fetching league summary...')
