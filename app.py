@@ -194,9 +194,9 @@ def main():
                 # Moderate the character description
                 progress.text('Validating character...')
                 progress.progress(15)
-                # if not summary_generator.moderate_text(character_description):
-                #     st.error("The character description contains inappropriate content. Please try again.")
-                #     return  # Stop execution if moderation fails
+                if not summary_generator.moderate_text(character_description):
+                    st.error("The character description contains inappropriate content. Please try again.")
+                    return  # Stop execution if moderation fails
                 
                 # Fetching league summary
                 progress.text('Fetching league summary...')
@@ -216,17 +216,6 @@ def main():
                     st.write("Completed summary query, cleaning up...")
                     shutil.rmtree(temp_dir)
                     st.write("Done with cleanup! Creating AI summary now...")
-                    # auth_directory = "auth"
-                    # auth_directory = authenticate_yahoo() #new version
-                    # summary = summary_generator.get_yahoo_league_summary(
-                    #     league_id, auth_directory
-                    # )
-                    # New version
-                    # if auth_directory:
-                    #     summary = summary_generator.get_yahoo_league_summary(league_id, auth_directory)
-                    #     cleanup_temp_dir(auth_directory)
-                    # else:
-                    #     st.error("Authentication failed. Please try again.")
                 elif league_type == "Sleeper":
                     auth_directory = "auth"
                     summary = summary_generator.generate_sleeper_summary(
