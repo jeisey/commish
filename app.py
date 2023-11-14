@@ -82,6 +82,8 @@ def main():
 
                 if 'refresh_token' not in st.session_state:
                     st.session_state['refresh_token'] = ''
+                
+                temp_dir = None
 
                 st.write("1. Click the link below to authenticate with Yahoo and get the authorization code.")
                 st.write(f"[Authenticate with Yahoo]({auth_page})")
