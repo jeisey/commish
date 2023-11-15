@@ -134,7 +134,7 @@ def generate_espn_summary(league, cw):
     
     return summary.strip()
 
-@st.cache_data(ttl=3600)
+# @st.cache_data(ttl=3600)
 def get_espn_league_summary(league_id, espn2, SWID):
     # Fetch data from ESPN Fantasy API and compute statistics   
     start_time_league_connect = datetime.datetime.now() 
@@ -159,7 +159,7 @@ def get_espn_league_summary(league_id, espn2, SWID):
     debug_info = "Summary: " + summary + " ~~~Timings~~~ " + f"League Connect Duration: {league_connect_duration} seconds " + f"Summary Duration: {summary_duration} seconds "
     return summary, debug_info
 
-@st.cache_data(ttl=3600)
+# @st.cache_data(ttl=3600)
 def get_yahoo_league_summary(league_id, auth_path):    
     league_id = league_id
     LOGGER.info(f"League id: {league_id}")
@@ -175,7 +175,7 @@ def get_yahoo_league_summary(league_id, auth_path):
     return recap
 
 
-@st.cache_data(ttl=3600)
+# @st.cache_data(ttl=3600)
 def generate_sleeper_summary(league_id):
     # Initialize the Sleeper API League object
     league = SleeperLeague(league_id)
