@@ -228,12 +228,11 @@ def main():
                 progress.text('Generating AI summary...')
                 progress.progress(50)
 
-                LOGGER.debug("Attempting GPT Summary")
-
+                LOGGER.debug("Initializing GPT Summary Stream...")
                 gpt4_summary_stream = summary_generator.generate_gpt4_summary_streaming(
                     openai_api_key, summary, character_description, trash_talk_level
                 )
-                LOGGER.debug(gpt4_summary_stream)
+                LOGGER.debug(f"Generator object: {gpt4_summary_stream}")
                 LOGGER.debug("Recieved GPT Summary. Attempting GPT Stream...")
                 with st.chat_message("Commish", avatar="🤖"):
                     message_placeholder = st.empty()
