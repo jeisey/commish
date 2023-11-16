@@ -53,7 +53,7 @@ def generate_gpt4_summary_streaming(openai_api_key, summary, character_choice, t
 
     try:
         # Send the messages to OpenAI's GPT-4 for analysis
-        response = client.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-4", #options: gpt-4, gpt-3.5-turbo, gpt-4-1106-preview
             messages=messages,
             max_tokens=800,  # Control response length
