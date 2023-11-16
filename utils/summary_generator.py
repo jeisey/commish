@@ -63,10 +63,10 @@ def generate_gpt4_summary_streaming(openai_api_key, summary, character_choice, t
         # Extract and return the GPT-4 generated message
         LOGGER.debug("__GPT4__FUNCTION MESSAGES SENT SUCCESSFULLY TO GPT. RETREVIEING RESPONSE...")
         for chunk in response:
-            LOGGER.debug(f"Received chunk: {chunk}")  # Additional logging
-            # Check if 'content' key exists in the delta of the choice
-            if 'content' in chunk.choices[0].delta:
-                yield chunk.choices[0].delta['content']
+            LOGGER.debug(f"Received chunk: {chunk}")
+            content = chunk.choices[0].delta.content
+            if content:
+                yield content
             else:
                 LOGGER.debug("End of stream or unexpected structure detected.")  # Additional logging
                 print("End of stream or unexpected structure detected.")
