@@ -73,8 +73,9 @@ def generate_gpt4_summary_streaming(openai_api_key, summary, character_choice, t
                 break
         LOGGER.debug("__GPT4__FUNCTION RESPONSE SUCCESSFULLY RECIEVED.")
     except Exception as e:
-        print("Error details:", e)
+        LOGGER.error(f"Error in generating summary: {e}", exc_info=True)
         return "Failed to get response from GPT-4"
+
 
 
 # # Lateny troubleshooting: https://platform.openai.com/docs/guides/production-best-practices/improving-latencies
