@@ -1,5 +1,5 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 from streamlit.logger import get_logger
 from utils import summary_generator
 from utils.helper import check_availability
@@ -189,16 +189,16 @@ def main():
 
                 # Fetch open ai key
                 openai_api_key = st.secrets["openai_api_key"]
-                openai.api_key = openai_api_key
+                # openai.api_key = openai_api_key
                 LOGGER.debug("Successfully retrieved OpenAI Keys")
 
 
                 # Moderate the character description
                 progress.text('Validating character...')
                 progress.progress(15)
-                # if not summary_generator.moderate_text(character_description):
-                #     st.error("The character description contains inappropriate content. Please try again.")
-                #     return  # Stop execution if moderation fails
+                if not summary_generator.moderate_text(openai_api_key, character_description):
+                    st.error("The character description contains inappropriate content. Please try again.")
+                    return  # Stop execution if moderation fails
                 
                 # Fetching league summary
                 progress.text('Fetching league summary...')
@@ -231,7 +231,7 @@ def main():
                 LOGGER.debug("Attempting GPT Summary")
 
                 gpt4_summary_stream = summary_generator.generate_gpt4_summary_streaming(
-                    summary, character_description, trash_talk_level
+                    openai_api_key, summary, character_description, trash_talk_level
                 )
                 LOGGER.debug(gpt4_summary_stream)
                 LOGGER.debug("Recieved GPT Summary. Attempting GPT Stream...")
