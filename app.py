@@ -1,5 +1,6 @@
 import streamlit as st
-from openai import OpenAI
+# from openai import OpenAI
+import openai
 from streamlit.logger import get_logger
 from utils import summary_generator
 from utils.helper import check_availability
@@ -189,7 +190,7 @@ def main():
 
                 # Fetch open ai key
                 openai_api_key = st.secrets["openai_api_key"]
-                # openai.api_key = openai_api_key
+                openai.api_key = openai_api_key
                 LOGGER.debug("Successfully retrieved OpenAI Keys")
 
 
