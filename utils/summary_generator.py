@@ -43,10 +43,12 @@ def generate_gpt4_summary_streaming(openai_api_key, summary, character_choice, t
     Keep your summary concise enough (under 800 characters) as to not overwhelm the user with stats but still engaging, funny, thematic, and insightful. You can sprinkle in a few emojis if they are thematic. Only respond in character and do not reply with anything other than your recap. Begin by introducing \
     your character. Here is the provided weekly fantasy summary: {summary}"
 
+    instruction_test = "How do I output all files in a directory using Python?"
+
     # Create the messages array
     messages = [
         {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": instruction}
+        {"role": "user", "content": instruction_test}
     ]
 
     LOGGER.debug("__GPT4__FUNCTION SENDING MESSAGES TO GPT")
@@ -59,7 +61,7 @@ def generate_gpt4_summary_streaming(openai_api_key, summary, character_choice, t
             max_tokens=800,  # Control response length
             stream=True
         )
-        
+
 
         # Extract and return the GPT-4 generated message
         LOGGER.debug("__GPT4__FUNCTION MESSAGES SENT SUCCESSFULLY TO GPT. RETREVIEING RESPONSE...")
