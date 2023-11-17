@@ -59,11 +59,15 @@ def generate_gpt4_summary_streaming(openai_api_key, summary, character_choice, t
             max_tokens=800,  # Control response length
             stream=True
         )
+        
 
         # Extract and return the GPT-4 generated message
         LOGGER.debug("__GPT4__FUNCTION MESSAGES SENT SUCCESSFULLY TO GPT. RETREVIEING RESPONSE...")
         for chunk in response:
             LOGGER.debug(f"Received chunk: {chunk}")
+            if not chunk.choices:
+                LOGGER.debug("No choices in chunk")
+                continue
             content = chunk.choices[0].delta.content
             if content:
                 yield content
