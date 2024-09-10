@@ -1,6 +1,6 @@
 import streamlit as st
 # from openai import OpenAI
-import openai
+from openai import OpenAI
 from streamlit.logger import get_logger
 from utils import summary_generator
 from utils.helper import check_availability
