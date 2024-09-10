@@ -15,9 +15,9 @@ import shutil
 
 LOGGER = get_logger(__name__)
 
-OPEN_AI_ORG_ID = os.getenv('OPENAI_ORG_ID')
-OPEN_AI_PROJECT_ID = os.getenv('OPENAI_API_PROJECT_ID')
-OPENAI_API_KEY = os.getenv('OPENAI_COMMISH_API_KEY')
+OPEN_AI_ORG_ID = st.secrets["OPENAI_ORG_ID"]
+OPEN_AI_PROJECT_ID = st.secrets["OPENAI_API_PROJECT_ID"]
+OPENAI_API_KEY = st.secrets["OPENAI_COMMISH_API_KEY"]
 
 client = OpenAI(
     organization=OPEN_AI_ORG_ID,
