@@ -30,30 +30,33 @@ OPENAI_API_KEY = os.getenv('OPENAI_COMMISH_API_KEY')
 #         print(f"An error occurred: {str(e)}")
 #         return False  # Assume text is inappropriate in case of an error
 
-
 def moderate_text(text):
     try:
         # Create OpenAI client instance
-        client = OpenAI(
-        organization=OPEN_AI_ORG_ID,
-        project=OPEN_AI_PROJECT_ID,
-        api_key=OPENAI_API_KEY
-        )
+        client = OpenAI(api_key=OPENAI_API_KEY)
 
         # Send the moderation request
         response = client.moderations.create(
-            input=text
+            input=text,
+            model="text-moderation-latest"  # Use the latest moderation model
         )
         
         # Extract the first result
         result = response['results'][0]
         
-        # Return True if the content is not flagged, otherwise False
-        return not result['flagged']
+        # Check if the content is flagged
+        if result['flagged']:
+            # Log the flagged categories
+            flagged_categories = [category for category, flagged in result['categories'].items() if flagged]
+            print(f"Moderation flagged the following categories: {', '.join(flagged_categories)}")
+            return False  # Return False if any category is flagged
+        return True  # Content is not flagged, return True
         
     except Exception as e:
         print(f"An error occurred: {str(e)}")
         return False  # Assume text is inappropriate in case of an error
+
+
 
 # def generate_gpt4_summary_streaming(openai_api_key, summary, character_choice, trash_talk_level):
 #     # Instantiate a client with the API key
