@@ -189,10 +189,10 @@ def main():
                 LOGGER.debug("Retrieving OpenAI Keys")
 
                 # Fetch open ai key
-                openai_api_key = st.secrets["openai_api_key"]
-                openai.api_key = openai_api_key
+                OPEN_AI_ORG_ID = os.getenv('OPENAI_ORG_ID')
+                OPEN_AI_PROJECT_ID = os.getenv('OPENAI_API_PROJECT_ID')
+                OPENAI_API_KEY = os.getenv('OPENAI_COMMISH_API_KEY')
                 LOGGER.debug("Successfully retrieved OpenAI Keys")
-
 
                 # Moderate the character description
                 progress.text('Validating character...')
