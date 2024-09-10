@@ -240,7 +240,7 @@ def main():
 
                 LOGGER.debug("Initializing GPT Summary Stream...")
                 gpt4_summary_stream = summary_generator.generate_gpt4_summary_streaming(
-                    summary, character_description, trash_talk_level
+                    client, summary, character_description, trash_talk_level
                 )
                 LOGGER.debug(f"Generator object: {gpt4_summary_stream}")
                 LOGGER.debug("Recieved GPT Summary. Attempting GPT Stream...")
