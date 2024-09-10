@@ -30,11 +30,8 @@ OPENAI_API_KEY = os.getenv('OPENAI_COMMISH_API_KEY')
 #         print(f"An error occurred: {str(e)}")
 #         return False  # Assume text is inappropriate in case of an error
 
-def moderate_text(text):
+def moderate_text(client, text):
     try:
-        # Create OpenAI client instance
-        client = OpenAI(api_key=OPENAI_API_KEY)
-
         # Send the moderation request
         response = client.moderations.create(
             input=text,
@@ -112,7 +109,7 @@ def moderate_text(text):
 # Lateny troubleshooting: https://platform.openai.com/docs/guides/production-best-practices/improving-latencies
 
 
-def generate_gpt4_summary_streaming(summary, character_choice, trash_talk_level):
+def generate_gpt4_summary_streaming(client, summary, character_choice, trash_talk_level):
     # Construct the instruction for GPT-4 based on user inputs
     instruction = f"You will be provided a summary below containing the most recent weekly stats for a fantasy football league. \
     Create a weekly recap in the style of {character_choice}. Do not simply repeat every single stat verbatim - be creative while calling out stats and being on theme. You should include trash talk with a level of {trash_talk_level} based on a scale of 1-10 (1 being no trash talk, 10 being excessive hardcore trash talk); feel free to make fun of (or praise) team names and performances, and add a touch of humor related to the chosen character. \
@@ -124,13 +121,6 @@ def generate_gpt4_summary_streaming(summary, character_choice, trash_talk_level)
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": instruction}
     ]
-    
-    # Create OpenAI client instance
-    client = OpenAI(
-    organization=OPEN_AI_ORG_ID,
-    project=OPEN_AI_PROJECT_ID,
-    api_key=OPENAI_API_KEY
-    )
 
     try:
         # Send the messages to OpenAI's GPT-4 for analysis
