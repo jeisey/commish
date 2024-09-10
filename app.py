@@ -194,14 +194,6 @@ def main():
                 trash_talk_level = st.session_state.get('Trash Talk Level', 'Not provided')
                 swid = st.session_state.get('SWID', 'Not provided')
                 espn2 = st.session_state.get('ESPN2_Id', 'Not provided')
-                
-                LOGGER.debug("Retrieving OpenAI Keys")
-
-                # Fetch open ai key
-                OPEN_AI_ORG_ID = os.getenv('OPENAI_ORG_ID')
-                OPEN_AI_PROJECT_ID = os.getenv('OPENAI_API_PROJECT_ID')
-                OPENAI_API_KEY = os.getenv('OPENAI_COMMISH_API_KEY')
-                LOGGER.debug("Successfully retrieved OpenAI Keys")
 
                 # Moderate the character description
                 progress.text('Validating character...')
