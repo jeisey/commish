@@ -11,10 +11,6 @@ from streamlit.logger import get_logger
 LOGGER = get_logger(__name__)
 
 
-OPEN_AI_ORG_ID = os.getenv('OPENAI_ORG_ID')
-OPEN_AI_PROJECT_ID = os.getenv('OPENAI_API_PROJECT_ID')
-OPENAI_API_KEY = os.getenv('OPENAI_COMMISH_API_KEY')
-
 # def moderate_text(openai_api_key, text):
 #     # Instantiate a client with the API key
 #     client = OpenAI(api_key=openai_api_key)
