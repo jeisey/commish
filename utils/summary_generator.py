@@ -3,7 +3,7 @@ from yfpy.query import YahooFantasySportsQuery
 from sleeper_wrapper import League as SleeperLeague
 from utils import espn_helper, yahoo_helper, sleeper_helper, helper
 # from openai import OpenAI
-import openai
+from openai import OpenAI
 import datetime
 import streamlit as st
 from streamlit.logger import get_logger
@@ -27,9 +27,20 @@ LOGGER = get_logger(__name__)
 
 def moderate_text(text):
     try:
-        response = openai.Moderation.create(input=text)
+        # Create OpenAI client instance
+        client = OpenAI()
+
+        # Send the moderation request
+        response = client.moderations.create(
+            input=text
+        )
+        
+        # Extract the first result
         result = response['results'][0]
-        return not result['flagged']  # return True if text is ok, False if it's inappropriate
+        
+        # Return True if the content is not flagged, otherwise False
+        return not result['flagged']
+        
     except Exception as e:
         print(f"An error occurred: {str(e)}")
         return False  # Assume text is inappropriate in case of an error
@@ -86,41 +97,44 @@ def moderate_text(text):
 
 
 # Lateny troubleshooting: https://platform.openai.com/docs/guides/production-best-practices/improving-latencies
+
+
 def generate_gpt4_summary_streaming(summary, character_choice, trash_talk_level):
     # Construct the instruction for GPT-4 based on user inputs
     instruction = f"You will be provided a summary below containing the most recent weekly stats for a fantasy football league. \
     Create a weekly recap in the style of {character_choice}. Do not simply repeat every single stat verbatim - be creative while calling out stats and being on theme. You should include trash talk with a level of {trash_talk_level} based on a scale of 1-10 (1 being no trash talk, 10 being excessive hardcore trash talk); feel free to make fun of (or praise) team names and performances, and add a touch of humor related to the chosen character. \
     Keep your summary concise enough (under 800 characters) as to not overwhelm the user with stats but still engaging, funny, thematic, and insightful. You can sprinkle in a few emojis if they are thematic. Only respond in character and do not reply with anything other than your recap. Begin by introducing \
     your character. Here is the provided weekly fantasy summary: {summary}"
-    
+
     # Create the messages array
     messages = [
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": instruction}
     ]
-    LOGGER.debug("__GPT4__FUNCTION SENDING MESSAGES TO GPT")
     
+    # Create OpenAI client instance
+    client = OpenAI()
+
     try:
         # Send the messages to OpenAI's GPT-4 for analysis
-        response = openai.ChatCompletion.create(
-            model="gpt-4", #options: gpt-4, gpt-3.5-turbo, gpt-4-1106-preview
+        response = client.chat.completions.create(
+            model="gpt-4o-mini",  # Use the appropriate model like gpt-4o-mini or gpt-4o
             messages=messages,
-            max_tokens=800,  # Control response lnegth
+            max_tokens=800,  # Control response length
             stream=True
         )
+        
         # Extract and return the GPT-4 generated message
-        LOGGER.debug("__GPT4__FUNCTION MESSAGES SENT SUCCESSFULLY TO GPT. RETREVIEING RESPONSE...")
         for chunk in response:
-            # Check if 'content' key exists
-            if 'content' in chunk.choices[0].delta:
-                yield chunk.choices[0].delta['content']
+            if 'content' in chunk.choices[0].message:
+                yield chunk.choices[0].message['content']
             else:
                 print("End of stream or unexpected structure detected.")
                 break
-        LOGGER.debug("__GPT4__FUNCTION RESPONSE SUCCESSFULLY RECIEVED.")
     except Exception as e:
         print("Error details:", e)
         return "Failed to get response from GPT-4"
+
 
 # @st.cache_data(ttl=3600) - Cannot hash argument 'league'
 def generate_espn_summary(league, cw):
