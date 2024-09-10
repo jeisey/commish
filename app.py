@@ -15,6 +15,15 @@ import shutil
 
 LOGGER = get_logger(__name__)
 
+OPEN_AI_ORG_ID = os.getenv('OPENAI_ORG_ID')
+OPEN_AI_PROJECT_ID = os.getenv('OPENAI_API_PROJECT_ID')
+OPENAI_API_KEY = os.getenv('OPENAI_COMMISH_API_KEY')
+
+client = OpenAI(
+    organization=OPEN_AI_ORG_ID,
+    project=OPEN_AI_PROJECT_ID,
+    api_key=OPENAI_API_KEY
+    )
 
 st.set_page_config(
     page_title="Commish.ai",
@@ -197,7 +206,7 @@ def main():
                 # Moderate the character description
                 progress.text('Validating character...')
                 progress.progress(15)
-                if not summary_generator.moderate_text(character_description):
+                if not summary_generator.moderate_text(client, character_description):
                     st.error("The character description contains inappropriate content. Please try again.")
                     return  # Stop execution if moderation fails
                 
