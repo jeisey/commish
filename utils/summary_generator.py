@@ -5,9 +5,15 @@ from utils import espn_helper, yahoo_helper, sleeper_helper, helper
 # from openai import OpenAI
 from openai import OpenAI
 import datetime
+import os
 import streamlit as st
 from streamlit.logger import get_logger
 LOGGER = get_logger(__name__)
+
+
+OPEN_AI_ORG_ID = os.getenv('OPENAI_ORG_ID')
+OPEN_AI_PROJECT_ID = os.getenv('OPENAI_API_PROJECT_ID')
+OPENAI_API_KEY = os.getenv('OPENAI_COMMISH_API_KEY')
 
 # def moderate_text(openai_api_key, text):
 #     # Instantiate a client with the API key
@@ -28,7 +34,11 @@ LOGGER = get_logger(__name__)
 def moderate_text(text):
     try:
         # Create OpenAI client instance
-        client = OpenAI()
+        client = OpenAI(
+        organization=OPEN_AI_ORG_ID,
+        project=OPEN_AI_PROJECT_ID,
+        api_key=OPENAI_API_KEY
+        )
 
         # Send the moderation request
         response = client.moderations.create(
@@ -113,7 +123,11 @@ def generate_gpt4_summary_streaming(summary, character_choice, trash_talk_level)
     ]
     
     # Create OpenAI client instance
-    client = OpenAI()
+    client = OpenAI(
+    organization=OPEN_AI_ORG_ID,
+    project=OPEN_AI_PROJECT_ID,
+    api_key=OPENAI_API_KEY
+    )
 
     try:
         # Send the messages to OpenAI's GPT-4 for analysis
