@@ -235,28 +235,31 @@ def main():
                     gpt4_summary_stream = summary_generator.generate_gpt4_summary_streaming(
                         client, summary, character_description, trash_talk_level
                     )
-                    LOGGER.debug(f"Generator object: {gpt4_summary_stream}")
+                    LOGGER.debug(f"Generator object initialized: {gpt4_summary_stream}")
                     
-                    LOGGER.debug("Received GPT Summary. Attempting GPT Stream...")
-                    
-                    # Start the Streamlit chat message with a placeholder to update as chunks are streamed
                     with st.chat_message("Commish", avatar="🤖"):
                         message_placeholder = st.empty()  # Placeholder for streamed message
                         full_response = ""  # Variable to store the full response as it streams
-                        
+                
                         # Iterate over the generator streaming GPT-4 responses
                         for chunk in gpt4_summary_stream:
                             full_response += chunk  # Append each streamed chunk to the full response
                             message_placeholder.markdown(full_response + "▌")  # Display partial message with a cursor-like symbol
+                            LOGGER.debug(f"Received chunk: {chunk}")  # Log each chunk for debugging
                             
                         # Once streaming is done, update the message with the complete response
                         message_placeholder.markdown(full_response)
-                        
+                
                     LOGGER.debug("GPT Stream completed!")
                     
                     # Optionally, provide the full response in a code block with a copy button
                     st.markdown("**Click the copy icon** 📋 below in top right corner to copy your summary and paste it wherever you see fit!")
                     st.code(full_response, language="")
+                
+                except Exception as e:
+                    LOGGER.error(f"An error occurred while streaming GPT response: {str(e)}")
+                    st.error(f"An error occurred: {str(e)}")
+
                     
                 except Exception as e:
                     st.error(f"An error occurred while streaming GPT response: {str(e)}")
