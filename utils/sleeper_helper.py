@@ -114,18 +114,25 @@ def highest_scoring_benched_player_of_week(matchups, players_data, user_team_map
     else:
         return None, None, "Unknown Team"
 
-    
 def biggest_blowout_match_of_week(scoreboards):
     biggest_blowout = -1
     biggest_blowout_match = None
     
     for matchup, teams in scoreboards.items():
+        # Ensure there are two teams in the matchup
+        if len(teams) < 2:
+            continue
         point_diff = abs(teams[0][1] - teams[1][1])
         if point_diff > biggest_blowout:
             biggest_blowout = point_diff
             biggest_blowout_match = (teams[0], teams[1])
-            
+    
+    # If no blowout match is found, return placeholders
+    if biggest_blowout_match is None:
+        return ("No match", "No match"), 0
+
     return biggest_blowout_match, biggest_blowout
+
 
 def closest_match_of_week(scoreboards):
     smallest_margin = float('inf')
