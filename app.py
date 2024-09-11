@@ -230,12 +230,13 @@ def main():
                 progress.text('Generating AI summary...')
                 progress.progress(50)
 
-                LOGGER.debug("Initializing GPT Summary Stream...")
-                gpt4_summary_stream = summary_generator.generate_gpt4_summary_streaming(
-                    client, summary, character_description, trash_talk_level
-                )
-                LOGGER.debug(f"Generator object: {gpt4_summary_stream}")
-                LOGGER.debug("Recieved GPT Summary. Attempting GPT Stream...")
+                # LOGGER.debug("Initializing GPT Summary Stream...")
+                # gpt4_summary_stream = summary_generator.generate_gpt4_summary_streaming(
+                #     client, summary, character_description, trash_talk_level
+                # )
+                # LOGGER.debug(f"Generator object: {gpt4_summary_stream}")
+                # LOGGER.debug("Recieved GPT Summary. Attempting GPT Stream...")
+                LOGGER.debug("Attempting GPT Stream...")
                 with st.chat_message("Commish", avatar="🤖"):
                     message_placeholder = st.empty()
                     full_response = ""
