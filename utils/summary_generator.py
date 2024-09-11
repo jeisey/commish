@@ -246,7 +246,7 @@ def generate_sleeper_summary(league_id):
         f"Highest scoring player of the week: {highest_scoring_player_week} with {weekly_score} points (Team: {highest_scoring_player_team_week})\n"
         f"Lowest scoring player of the week that started: {lowest_scoring_starter} with {lowest_starter_score} points (Team: {lowest_scoring_starter_team})\n"
         f"Highest scoring benched player of the week: {highest_scoring_benched_player} with {highest_benched_score} points (Team: {highest_scoring_benched_player_team})\n"
-        f"Biggest blowout match of the week: {blowout_teams[0]} vs {blowout_teams[1]} (Point Differential: {round(point_differential_blowout,2)})\n"
+        f"Biggest blowout match of the week: {blowout_teams[0]} vs {blowout_teams[1]} (Point Differential: {round(point_differential_blowout, 2)})\n"
         f"Closest match of the week: {close_teams[0]} vs {close_teams[1]} (Point Differential: {round(point_differential_close,2)})\n"
         # f"Team with the most moves: {team_most_moves} with {most_moves} moves\n" #These always seems to be zero
         f"Team on the hottest streak: {hottest_streak_team} with a {longest_streak} game win streak"
