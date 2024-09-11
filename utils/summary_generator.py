@@ -59,12 +59,12 @@ def generate_gpt4_summary_streaming(client, summary, character_choice, trash_tal
         
         # Extract and yield the GPT-4 generated message
         for chunk in response:
-            if chunk.choices[0].delta.get('content') is not None:
-                yield chunk.choices[0].delta['content']
+            # Access 'content' directly since 'delta' is an object, not a dictionary
+            if hasattr(chunk.choices[0].delta, 'content'):
+                yield chunk.choices[0].delta.content
 
     except Exception as e:
         yield f"Error details: {e}"
-
 
 # @st.cache_data(ttl=3600) - Cannot hash argument 'league'
 def generate_espn_summary(league, cw):
