@@ -51,20 +51,20 @@ def generate_gpt4_summary_streaming(client, summary, character_choice, trash_tal
     try:
         # Send the messages to OpenAI's GPT-4 for analysis
         response = client.chat.completions.create(
-            model="gpt-4o",  # Use the appropriate model like gpt-4o-mini or gpt-4o
+            model="gpt-4",  # Use the appropriate model
             messages=messages,
             max_tokens=800,  # Control response length
             stream=True
         )
         
-        # Extract and return the GPT-4 generated message
+        # Extract and yield the GPT-4 generated message
         for chunk in response:
-            if chunk.choices[0].delta.content is not None:
-                print(chunk.choices[0].delta.content, end="")
+            if chunk.choices[0].delta.get('content') is not None:
+                yield chunk.choices[0].delta['content']
 
     except Exception as e:
-        print("Error details:", e)
-        return "Failed to get response from GPT-4"
+        yield f"Error details: {e}"
+
 
 # @st.cache_data(ttl=3600) - Cannot hash argument 'league'
 def generate_espn_summary(league, cw):
