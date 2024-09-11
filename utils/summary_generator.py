@@ -251,7 +251,6 @@ def generate_sleeper_summary(league_id):
         # f"Team with the most moves: {team_most_moves} with {most_moves} moves\n" #These always seems to be zero
         f"Team on the hottest streak: {hottest_streak_team} with a {longest_streak} game win streak"
     )
+    LOGGER.info(f"Sleeper Summary Generated: \n{summary}")
 
-    logging.info(f"Sleeper Summary Generated: \n{summary}")
-    
     return summary
