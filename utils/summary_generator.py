@@ -104,7 +104,6 @@ def moderate_text(client, text):
 
 # Lateny troubleshooting: https://platform.openai.com/docs/guides/production-best-practices/improving-latencies
 
-
 def generate_gpt4_summary_streaming(client, summary, character_choice, trash_talk_level):
     # Construct the instruction for GPT-4 based on user inputs
     instruction = f"You will be provided a summary below containing the most recent weekly stats for a fantasy football league. \
@@ -121,22 +120,26 @@ def generate_gpt4_summary_streaming(client, summary, character_choice, trash_tal
     try:
         # Send the messages to OpenAI's GPT-4 for analysis
         response = client.chat.completions.create(
-            model="gpt-4o-mini",  # Use the appropriate model like gpt-4o-mini or gpt-4o
+            model="gpt-4o",  # Use the appropriate model
             messages=messages,
             max_tokens=800,  # Control response length
-            stream=True
+            stream=True  # Enable streaming
         )
-        
-        # Extract and return the GPT-4 generated message
+
+        # Extract and return the GPT-4 generated message in a streamed fashion
         for chunk in response:
-            if 'content' in chunk.choices[0].message:
-                yield chunk.choices[0].message['content']
+            if 'choices' in chunk and len(chunk['choices']) > 0:
+                delta = chunk['choices'][0].get('delta', {})
+                if 'content' in delta:
+                    yield delta['content']
             else:
                 print("End of stream or unexpected structure detected.")
                 break
+
     except Exception as e:
         print("Error details:", e)
         return "Failed to get response from GPT-4"
+
 
 
 # @st.cache_data(ttl=3600) - Cannot hash argument 'league'
