@@ -239,11 +239,13 @@ def main():
                 with st.chat_message("Commish", avatar="🤖"):
                     message_placeholder = st.empty()
                     full_response = ""
-                    progress.progress(70)
-                    for chunk in gpt4_summary_stream:
+                
+                    # Start streaming response
+                    for chunk in generate_gpt4_summary_streaming(client, summary, character_choice, trash_talk_level):
                         full_response += chunk
-                        message_placeholder.markdown(full_response + "▌")
-                    message_placeholder.markdown(full_response)
+                        message_placeholder.markdown(full_response + "▌")  # Update the message with streaming content
+                
+                    message_placeholder.markdown(full_response)  # Final markdown once streaming is done
                     
                     # Display the full response within a code block which provides a copy button
                     st.markdown("**Click the copy icon** 📋 below in top right corner to copy your summary and paste it wherever you see fit!")
