@@ -222,7 +222,7 @@ def get_espn_league_summary(league_id, espn2, SWID):
     # Fetch data from ESPN Fantasy API and compute statistics   
     start_time_league_connect = datetime.datetime.now() 
     league_id = league_id
-    year = 2023
+    year = 2024
     espn_s2 = espn2
     swid = SWID
     # Initialize league & current week
