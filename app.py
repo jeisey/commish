@@ -226,6 +226,7 @@ def main():
                         league_id  
                     )
                     LOGGER.debug(summary)
+                    LOGGER.info(f"Generated Sleeper Summary: \n{summary}")
                 
                 progress.text('Generating AI summary...')
                 progress.progress(50)
