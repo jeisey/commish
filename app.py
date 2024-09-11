@@ -12,7 +12,6 @@ from requests.auth import HTTPBasicAuth
 import time
 import os
 import shutil
-import logging
 
 LOGGER = get_logger(__name__)
 
@@ -226,7 +225,6 @@ def main():
                     summary = summary_generator.generate_sleeper_summary(
                         league_id  
                     )
-                    logging.info(f"Sleeper Summary Generated: \n{summary}")
                     LOGGER.debug(summary)
                 
                 progress.text('Generating AI summary...')
