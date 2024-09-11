@@ -139,12 +139,20 @@ def closest_match_of_week(scoreboards):
     closest_match = None
     
     for matchup, teams in scoreboards.items():
+        # Ensure there are two teams in the matchup
+        if len(teams) < 2:
+            continue
         point_diff = abs(teams[0][1] - teams[1][1])
         if point_diff < smallest_margin:
             smallest_margin = point_diff
             closest_match = (teams[0], teams[1])
-            
+    
+    # If no closest match is found, return placeholders
+    if closest_match is None:
+        return ("No match", "No match"), 0
+
     return closest_match, smallest_margin
+
 
 def team_with_most_moves(rosters, user_team_mapping, roster_owner_mapping):
     most_moves = -1
