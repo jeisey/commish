@@ -243,9 +243,11 @@ def main():
                 
                         # Iterate over the generator streaming GPT-4 responses
                         for chunk in gpt4_summary_stream:
-                            full_response += chunk  # Append each streamed chunk to the full response
-                            message_placeholder.markdown(full_response + "▌")  # Display partial message with a cursor-like symbol
-                            LOGGER.debug(f"Received chunk: {chunk}")  # Log each chunk for debugging
+                            # Ensure that 'chunk' is not None before concatenating
+                            if chunk is not None:
+                                full_response += chunk  # Append each streamed chunk to the full response
+                                message_placeholder.markdown(full_response + "▌")  # Display partial message with a cursor-like symbol
+                                LOGGER.debug(f"Received chunk: {chunk}")  # Log each chunk for debugging
                             
                         # Once streaming is done, update the message with the complete response
                         message_placeholder.markdown(full_response)
@@ -259,17 +261,8 @@ def main():
                 except Exception as e:
                     LOGGER.error(f"An error occurred while streaming GPT response: {str(e)}")
                     st.error(f"An error occurred: {str(e)}")
-
-                    
-                except Exception as e:
-                    st.error(f"An error occurred while streaming GPT response: {str(e)}")
                     LOGGER.exception(e)
                     st.text(traceback.format_exc())
-
-                    # Display the full response within a code block which provides a copy button
-                    st.markdown("**Click the copy icon** 📋 below in top right corner to copy your summary and paste it wherever you see fit!")
-                    st.code(full_response, language="")
-                    st.markdown("Don't like this one? Try entering a **new character** and it will **start generating immediately**.")
                     
                 LOGGER.debug("GPT Stream done!")
                 progress.text('Done!')
