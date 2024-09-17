@@ -51,7 +51,7 @@ def generate_gpt4_summary_streaming(client, summary, character_choice, trash_tal
     try:
         # Send the messages to OpenAI's GPT-4 for analysis
         response = client.chat.completions.create(
-            model="gpt-4",  # Use the appropriate model
+            model="gpt-4o-mini",  # Use the appropriate model
             messages=messages,
             max_tokens=800,  # Control response length
             stream=True
