@@ -53,7 +53,7 @@ def generate_gpt4_summary_streaming(client, summary, character_choice, trash_tal
         response = client.chat.completions.create(
             model="gpt-4o-mini",  # Use the appropriate model
             messages=messages,
-            max_tokens=800,  # Control response length
+            max_tokens=1600,  # Control response length
             stream=True
         )
         
