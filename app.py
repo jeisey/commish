@@ -1,5 +1,4 @@
 import streamlit as st
-# from openai import OpenAI
 from openai import OpenAI
 from streamlit.logger import get_logger
 from utils import summary_generator
@@ -15,15 +14,9 @@ import shutil
 
 LOGGER = get_logger(__name__)
 
-OPEN_AI_ORG_ID = st.secrets["OPENAI_ORG_ID"]
-OPEN_AI_PROJECT_ID = st.secrets["OPENAI_API_PROJECT_ID"]
 OPENAI_API_KEY = st.secrets["OPENAI_COMMISH_API_KEY"]
 
-client = OpenAI(
-    organization=OPEN_AI_ORG_ID,
-    project=OPEN_AI_PROJECT_ID,
-    api_key=OPENAI_API_KEY
-    )
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 st.set_page_config(
     page_title="Commish.ai",
