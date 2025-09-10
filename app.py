@@ -223,12 +223,14 @@ def main():
                 elif league_type == "Sleeper":
                     auth_directory = "auth"
                     summary = summary_generator.generate_sleeper_summary(
-                        league_id  
+                        league_id
                     )
                     LOGGER.debug(summary)
                     LOGGER.info(f"Generated Sleeper Summary: \n{summary}")
-                    st.write(summary) #to delete
-                
+
+                st.markdown("### Stat Summary")
+                st.markdown(summary)
+
                 progress.text('Generating AI summary...')
                 progress.progress(50)
 
