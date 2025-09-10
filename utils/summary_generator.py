@@ -190,7 +190,8 @@ def generate_sleeper_summary(league_id):
     # Initialize the Sleeper API League object
     league = SleeperLeague(league_id)
     current_date_today = datetime.datetime.now()
-    week = helper.get_current_week(current_date_today)-1 #force to always be most recent completed week
+    # Determine the most recently completed week
+    week = helper.get_current_week(current_date_today)
     # Get necessary data from the league
     rosters = league.get_rosters()
     users = league.get_users()
