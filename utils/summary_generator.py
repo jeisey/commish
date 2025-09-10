@@ -17,20 +17,25 @@ def moderate_text(client, text):
             input=text,
             model="text-moderation-latest"  # Use the latest moderation model
         )
-        
+
         # Extract the first result
-        result = response['results'][0]
-        
+        result = response.results[0]
+
         # Check if the content is flagged
-        if result['flagged']:
+        if result.flagged:
             # Log the flagged categories
-            flagged_categories = [category for category, flagged in result['categories'].items() if flagged]
-            print(f"Moderation flagged the following categories: {', '.join(flagged_categories)}")
+            flagged_categories = [
+                category for category, flagged in result.categories.items() if flagged
+            ]
+            LOGGER.warning(
+                "Moderation flagged the following categories: %s",
+                ", ".join(flagged_categories),
+            )
             return False  # Return False if any category is flagged
         return True  # Content is not flagged, return True
-        
+
     except Exception as e:
-        print(f"An error occurred: {str(e)}")
+        LOGGER.error("An error occurred during moderation: %s", str(e))
         return False  # Assume text is inappropriate in case of an error
 
 # Lateny troubleshooting: https://platform.openai.com/docs/guides/production-best-practices/improving-latencies
@@ -80,51 +85,87 @@ def generate_espn_summary(league, cw):
     # Extracting required data using helper functions
     start_time = datetime.datetime.now()
     top_teams = espn_helper.top_three_teams(league)
-    print(f"Time for top_three_teams: {(datetime.datetime.now() - start_time).total_seconds()} seconds")
+    LOGGER.debug(
+        "Time for top_three_teams: %s seconds",
+        (datetime.datetime.now() - start_time).total_seconds(),
+    )
     
     start_time = datetime.datetime.now()
     top_scorer_week = espn_helper.top_scorer_of_week(league, cw)
-    print(f"Time for top_scorer_of_week: {(datetime.datetime.now() - start_time).total_seconds()} seconds")
+    LOGGER.debug(
+        "Time for top_scorer_of_week: %s seconds",
+        (datetime.datetime.now() - start_time).total_seconds(),
+    )
     
     start_time = datetime.datetime.now()
     worst_scorer_week = espn_helper.worst_scorer_of_week(league, cw)
-    print(f"Time for worst_scorer_of_week: {(datetime.datetime.now() - start_time).total_seconds()} seconds")
+    LOGGER.debug(
+        "Time for worst_scorer_of_week: %s seconds",
+        (datetime.datetime.now() - start_time).total_seconds(),
+    )
     
     start_time = datetime.datetime.now()
     top_scorer_szn = espn_helper.top_scorer_of_season(league)
-    print(f"Time for top_scorer_of_season: {(datetime.datetime.now() - start_time).total_seconds()} seconds")
+    LOGGER.debug(
+        "Time for top_scorer_of_season: %s seconds",
+        (datetime.datetime.now() - start_time).total_seconds(),
+    )
     
     start_time = datetime.datetime.now()
     worst_scorer_szn = espn_helper.worst_scorer_of_season(league)
-    print(f"Time for worst_scorer_of_season: {(datetime.datetime.now() - start_time).total_seconds()} seconds")
+    LOGGER.debug(
+        "Time for worst_scorer_of_season: %s seconds",
+        (datetime.datetime.now() - start_time).total_seconds(),
+    )
     
     start_time = datetime.datetime.now()
     most_trans = espn_helper.team_with_most_transactions(league)
-    print(f"Time for team_with_most_transactions: {(datetime.datetime.now() - start_time).total_seconds()} seconds")
+    LOGGER.debug(
+        "Time for team_with_most_transactions: %s seconds",
+        (datetime.datetime.now() - start_time).total_seconds(),
+    )
     
     start_time = datetime.datetime.now()
     most_injured = espn_helper.team_with_most_injured_players(league)
-    print(f"Time for team_with_most_injured_players: {(datetime.datetime.now() - start_time).total_seconds()} seconds")
+    LOGGER.debug(
+        "Time for team_with_most_injured_players: %s seconds",
+        (datetime.datetime.now() - start_time).total_seconds(),
+    )
     
     start_time = datetime.datetime.now()
     highest_bench = espn_helper.highest_scoring_benched_player(league, cw)
-    print(f"Time for highest_scoring_benched_player: {(datetime.datetime.now() - start_time).total_seconds()} seconds")
+    LOGGER.debug(
+        "Time for highest_scoring_benched_player: %s seconds",
+        (datetime.datetime.now() - start_time).total_seconds(),
+    )
     
     start_time = datetime.datetime.now()
     lowest_start = espn_helper.lowest_scoring_starting_player(league, cw)
-    print(f"Time for lowest_scoring_starting_player: {(datetime.datetime.now() - start_time).total_seconds()} seconds")
+    LOGGER.debug(
+        "Time for lowest_scoring_starting_player: %s seconds",
+        (datetime.datetime.now() - start_time).total_seconds(),
+    )
     
     start_time = datetime.datetime.now()
     biggest_blowout = espn_helper.biggest_blowout_match(league, cw)
-    print(f"Time for biggest_blowout_match: {(datetime.datetime.now() - start_time).total_seconds()} seconds")
+    LOGGER.debug(
+        "Time for biggest_blowout_match: %s seconds",
+        (datetime.datetime.now() - start_time).total_seconds(),
+    )
     
     start_time = datetime.datetime.now()
     closest_game = espn_helper.closest_game_match(league, cw)
-    print(f"Time for closest_game_match: {(datetime.datetime.now() - start_time).total_seconds()} seconds")
+    LOGGER.debug(
+        "Time for closest_game_match: %s seconds",
+        (datetime.datetime.now() - start_time).total_seconds(),
+    )
     
     start_time = datetime.datetime.now()
     top_scoring_team_Week = espn_helper.highest_scoring_team(league, cw)
-    print(f"Time for top_scoring_team_string: {(datetime.datetime.now() - start_time).total_seconds()} seconds")
+    LOGGER.debug(
+        "Time for top_scoring_team_string: %s seconds",
+        (datetime.datetime.now() - start_time).total_seconds(),
+    )
     
     # Formatting the summary
     summary = f"""

@@ -218,7 +218,11 @@ def main():
                     summary = summary_generator.get_yahoo_league_summary(league_id, temp_dir)
                     LOGGER.debug(summary)
                     st.write("Completed summary query, cleaning up...")
-                    shutil.rmtree(temp_dir)
+                    if temp_dir and os.path.isdir(temp_dir):
+                        try:
+                            shutil.rmtree(temp_dir)
+                        except OSError as e:
+                            LOGGER.warning("Failed to remove temp dir %s: %s", temp_dir, e)
                     st.write("Done with cleanup! Creating AI summary now...")
                 elif league_type == "Sleeper":
                     auth_directory = "auth"
