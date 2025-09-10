@@ -51,7 +51,7 @@ def main():
 
 
     with st.sidebar:
-        st.sidebar.image('logo.png', use_column_width=True)
+        st.sidebar.image('logo.png', use_container_width=True)
         is_available, today = check_availability()
         if is_available:
             st.success(f"Today is {today}. The most recent week is completed and a recap is available.")
