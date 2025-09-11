@@ -15,23 +15,28 @@ def check_availability():
         return True, now_est.strftime("%A")
     else:
         return False, now_est.strftime("%A")
-    
 
 def get_current_week(current_date):
+    # 2025 NFL (fantasy) weeks keyed by Tuesday of each week
     date_week_dict = {
-    '9/10/2024': 1, '9/17/2024': 2, '9/24/2024': 3, '10/1/2024': 4,
-    '10/8/2024': 5, '10/15/2024': 6, '10/22/2024': 7, '10/29/2024': 8,
-    '11/5/2024': 9, '11/12/2024': 10, '11/19/2024': 11, '11/26/2024': 12,
-    '12/3/2024': 13, '12/10/2024': 14, '12/17/2024': 15, '12/24/2024': 16
+        '9/9/2025': 1,  '9/16/2025': 2,  '9/23/2025': 3,  '9/30/2025': 4,
+        '10/7/2025': 5, '10/14/2025': 6, '10/21/2025': 7, '10/28/2025': 8,
+        '11/4/2025': 9, '11/11/2025': 10,'11/18/2025': 11,'11/25/2025': 12,
+        '12/2/2025': 13,'12/9/2025': 14, '12/16/2025': 15,'12/23/2025': 16
     }
+
     # Convert the string dates to datetime objects
-    date_week_dict_converted = {datetime.strptime(date, '%m/%d/%Y'): week for date, week in date_week_dict.items()}
-    
+    date_week_dict_converted = {
+        datetime.strptime(date_str, '%m/%d/%Y'): week
+        for date_str, week in date_week_dict.items()
+    }
+
     # Sort the dates in descending order
     sorted_dates = sorted(date_week_dict_converted.keys(), reverse=True)
-    
+
     # Iterate through the sorted dates to find the corresponding week number
-    for date in sorted_dates:
-        if current_date >= date:
-            return date_week_dict_converted[date]
-    return None  # If current date is before all the dates in the dictionary
+    for dt in sorted_dates:
+        if current_date >= dt:
+            return date_week_dict_converted[dt]
+    return None  # If current_date is before all mapped dates
+
