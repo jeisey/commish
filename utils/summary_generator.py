@@ -1,4 +1,5 @@
 from espn_api.football import League
+from espn_api.requests.espn_requests import ESPNInvalidLeague
 from yfpy.query import YahooFantasySportsQuery
 from sleeper_wrapper import League as SleeperLeague
 from utils import espn_helper, yahoo_helper, sleeper_helper, helper
@@ -190,14 +191,44 @@ def get_espn_league_summary(league_id, espn2, SWID):
     # Fetch data from ESPN Fantasy API and compute statistics   
     start_time_league_connect = datetime.datetime.now() 
     league_id = league_id
-    year = 2024
     espn_s2 = espn2
     swid = SWID
-    # Initialize league & current week
-    try:
-        league = League(league_id=league_id, year=year, espn_s2=espn_s2, swid=swid)
-    except Exception as e:
-        return str(e), "Error occurred during validation"
+
+    def _candidate_seasons(now):
+        """Return plausible ESPN season years in priority order."""
+        current_year = now.year
+        previous_year = current_year - 1
+
+        if now.month < 8:
+            ordered_years = [previous_year, current_year]
+        else:
+            ordered_years = [current_year, previous_year]
+
+        seen = set()
+        return [year for year in ordered_years if year not in seen and not seen.add(year)]
+
+    league = None
+    season_year = None
+    last_error = None
+    for candidate_year in _candidate_seasons(datetime.datetime.now()):
+        try:
+            league = League(
+                league_id=league_id,
+                year=candidate_year,
+                espn_s2=espn_s2,
+                swid=swid,
+            )
+            season_year = candidate_year
+            break
+        except ESPNInvalidLeague as err:
+            last_error = err
+            continue
+        except Exception as err:
+            return str(err), "Error occurred during validation"
+
+    if league is None:
+        message = str(last_error) if last_error else "Unable to determine ESPN season year"
+        return message, "Error occurred during validation"
     end_time_league_connect = datetime.datetime.now()
     league_connect_duration = (end_time_league_connect - start_time_league_connect).total_seconds()
     cw = league.current_week-1
@@ -207,7 +238,14 @@ def get_espn_league_summary(league_id, espn2, SWID):
     end_time_summary = datetime.datetime.now()
     summary_duration = (end_time_summary - start_time_summary).total_seconds()
     # Generage debugging information, placeholder for now
-    debug_info = "Summary: " + summary + " ~~~Timings~~~ " + f"League Connect Duration: {league_connect_duration} seconds " + f"Summary Duration: {summary_duration} seconds "
+    debug_info = (
+        "Summary: "
+        + summary
+        + " ~~~Timings~~~ "
+        + f"League Connect Duration: {league_connect_duration} seconds "
+        + f"Summary Duration: {summary_duration} seconds "
+        + f"Season Year: {season_year}"
+    )
     return summary, debug_info
 
 @st.cache_data(ttl=3600)
