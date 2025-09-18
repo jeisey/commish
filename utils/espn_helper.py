@@ -189,33 +189,37 @@ def worst_scorer_of_season(league):
 
 # Optimized version of the team_with_most_transactions function
 def team_with_most_transactions(league):
-    # Extract all recent league activities
-    activities = extract_recent_activities(league, size=100)  # Reduced size to fetch recent activities
+    """Return the team that has executed the most transactions this season.
 
-    # Define a direct mapping for action types
-    action_types = {
-        "FA ADDED": "Claims",
-        "WAIVER ADDED": "Claims",
-        "TRADED": "Trades"
-    }
-    
-    # Count transactions for each team
-    transaction_counts = {}
-    for activity in activities:
-        for action in activity.actions:
-            team = action[0]
-            action_type = action[1]
-            if team not in transaction_counts:
-                transaction_counts[team] = {"Claims": 0, "Trades": 0}
-            
-            # Use direct mapping for action types
-            if action_type in action_types:
-                transaction_counts[team][action_types[action_type]] += 1
-    
-    # Get team with most combined transactions
-    team_with_most_transactions = max(transaction_counts, key=lambda k: transaction_counts[k]["Claims"] + transaction_counts[k]["Trades"])
-    
-    return team_with_most_transactions, transaction_counts[team_with_most_transactions]["Claims"], transaction_counts[team_with_most_transactions]["Trades"]
+    The `espn_api` wrapper already exposes transaction counters on each team via
+    the league bootstrap payload, which means we do not need to make any
+    follow-up calls to the communications endpoint. Those calls have recently
+    started returning HTTP 404 for some private leagues, which bubbles up as an
+    ``ESPNInvalidLeague`` error even though the original league lookup was
+    successful. By relying on the cached bootstrap data we can avoid that extra
+    request and keep the summary generation resilient to those API changes.
+    """
+
+    top_team = None
+    top_claims = 0
+    top_trades = 0
+    top_total = -1
+
+    for team in league.teams:
+        claims = team.acquisitions or 0
+        trades = team.trades or 0
+        total = claims + trades
+
+        if total > top_total:
+            top_team = team
+            top_claims = claims
+            top_trades = trades
+            top_total = total
+
+    if top_team is None:
+        return None, 0, 0
+
+    return top_team, top_claims, top_trades
 
 
 def team_with_most_injured_players(league):
